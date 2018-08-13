@@ -2,7 +2,7 @@
   "name": "exsp",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://gk4m.github.io/exsp",
+  "homepage": "https://gk4m.github.io/exsp/index.html",
   "dependencies": {
     "gh-pages": "^1.2.0",
     "react": "^16.4.2",
