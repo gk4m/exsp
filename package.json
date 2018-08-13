@@ -2,7 +2,9 @@
   "name": "exsp",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://gk4m.github.io/exsp",
   "dependencies": {
+    "gh-pages": "^1.2.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2"
   },
@@ -10,6 +12,8 @@
     "react-scripts": "1.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
