@@ -2,10 +2,16 @@ import React, {Component} from 'react';
 import AuthService from '../services/auth';
 import App from '../components/App';
 
+import ls from '../utils/localStorage';
+
 class AppContainer extends Component {
 
   componentDidMount() {
-    //AuthService.login();
+    if (!ls.get('token')) {
+      AuthService.login()
+    }
+
+    AuthService.getTokensFromQuery();
   }
 
   render() {

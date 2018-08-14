@@ -1,13 +1,13 @@
-export default{
+export default {
 
   ls: window.localStorage,
 
-  set (key, value) {
+  set(key, value) {
     this.ls.setItem(key, JSON.stringify(value));
     return this.get(key);
   },
 
-  get (key) {
+  get(key) {
     try {
       return JSON.parse(this.ls.getItem(key));
     } catch (e) {
@@ -15,7 +15,11 @@ export default{
     }
   },
 
-  remove (key) {
+  remove(key) {
     this.ls.removeItem(key);
+  },
+
+  clear() {
+    this.ls.clear();
   }
 };
