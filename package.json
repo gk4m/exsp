@@ -2,7 +2,7 @@
   "name": "exsp",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://gk4m.github.io/exsp/index.html",
+  "homepage": "https://gk4m.github.io/exsp/",
   "dependencies": {
     "@material-ui/core": "^1.5.0",
     "autoprefixer": "7.1.6",

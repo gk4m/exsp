@@ -6,8 +6,20 @@ import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AuthService from '../services/auth';
+import PlaylistContainer from '../containers/PlaylistContainer';
 
-const styles = {
+const styles = theme => ({
+  layout: {
+    width: 'auto',
+    marginTop: 30,
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
+    [theme.breakpoints.up(600 + theme.spacing.unit * 2 * 2)]: {
+      width: 600,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+  },
   flex: {
     flexGrow: 1,
   },
@@ -15,21 +27,25 @@ const styles = {
     marginLeft: -12,
     marginRight: 20,
   },
-};
+});
 
 const App = (props) => {
   const {classes} = props;
 
   return (
     <div id="app">
+
       <AppBar position="static" color='primary'>
         <Toolbar>
-          <Typography variant="title" color="inherit" className={classes.flex}>
-            Exsp
-          </Typography>
+          <Typography variant="title" color="inherit" className={classes.flex}>Exsp</Typography>
           <Button color="inherit" onClick={AuthService.logout}>Logout</Button>
         </Toolbar>
       </AppBar>
+
+      <main className={classes.layout}>
+        <PlaylistContainer/>
+      </main>
+
     </div>
   )
 };

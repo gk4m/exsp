@@ -3,19 +3,14 @@ import ls from '../utils/localStorage';
 export default {
 
   async login() {
-    try {
-      const api = 'https://accounts.spotify.com/authorize';
-      const clientID = 'fe86f5b47d0b4cea8fd6eb37741aad92';
-      const {host, protocol, pathname} = window.location;
-      const redirectUri = `${protocol}//${host}${pathname}`;
-      const scope = 'playlist-read-private%20playlist-read-collaborative';
-      const responseType = 'token';
+    const api = 'https://accounts.spotify.com/authorize';
+    const clientID = 'fe86f5b47d0b4cea8fd6eb37741aad92';
+    const {host, protocol, pathname} = window.location;
+    const redirectUri = `${protocol}//${host}${pathname}`;
+    const scope = 'playlist-read-private%20playlist-read-collaborative';
+    const responseType = 'token';
 
-      window.location = `${api}?client_id=${clientID}&redirect_uri=${redirectUri}&scope=${scope}&response_type=${responseType}`;
-
-    } catch (e) {
-      console.log(e);
-    }
+    window.location = `${api}?client_id=${clientID}&redirect_uri=${redirectUri}&scope=${scope}&response_type=${responseType}`;
   },
 
   logout() {
@@ -31,10 +26,6 @@ export default {
     }, 1000)
   },
 
-  isLogged() {
-
-  },
-
   setAccessToken(token) {
     ls.set('token', token);
   },
@@ -43,9 +34,18 @@ export default {
     ls.set('expiry', time);
   },
 
+  getAccessToken() {
+    return ls.get('token');
+  },
+
+  getExpiryTime() {
+    return ls.get('expiry');
+  },
+
   getTokensFromQuery() {
     const vars = window.location.hash.substring(1).split('&');
     let key = {};
+
     for (let i = 0; i < vars.length; i++) {
       let tmp = vars[i].split('=');
       key[tmp[0]] = tmp[1];
