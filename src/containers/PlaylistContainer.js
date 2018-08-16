@@ -4,7 +4,7 @@ import api from '../api'
 
 class PlaylistContainer extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       limit: 50,
@@ -19,19 +19,18 @@ class PlaylistContainer extends Component {
       const {
         limit,
         total,
-        offset,
-        items
+        offset
       } = this.state;
 
       if (total > offset) {
         const response = await api.getUserPlaylists(limit, offset);
 
-        this.setState({
+        this.setState(prevState => ({
           offset: response.data.offset + limit,
-          total: response.data.total
-        });
+          total: response.data.total,
+          items: [...prevState.items, ...response.data.items]
+        }));
 
-        items.push(...response.data.items);
         this.fetchPlaylist();
       }
 
@@ -40,19 +39,21 @@ class PlaylistContainer extends Component {
     }
   }
 
-  componentDidMount() {
-  }
-
   componentWillMount() {
     this.fetchPlaylist();
   }
 
   render() {
+    const {
+      items
+    } = this.state;
+
     return (
       <div>
-        <Playlist/>
+        <Playlist items={items}/>
       </div>
     );
+
   }
 }
 
