@@ -9,6 +9,16 @@ export default {
       }
     });
   },
+
+  getPlaylistTracks(user_id, playlist_id, offset, limit, fields) {
+    return request.get(`users/${user_id}/playlists/${playlist_id}/tracks`, {
+      params: {
+        fields,
+        limit,
+        offset
+      }
+    });
+  },
 };
 
 

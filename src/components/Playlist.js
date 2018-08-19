@@ -9,7 +9,8 @@ import Avatar from '@material-ui/core/Avatar';
 
 const Playlist = (props) => {
   const {
-    items
+    items,
+    handleExportClick,
   } = props;
 
   const renderImage = (images) => {
@@ -26,6 +27,7 @@ const Playlist = (props) => {
 
   return (
     <div>
+      <button onClick={handleExportClick}>export all</button>
       <Table>
         <TableHead>
           <TableRow>

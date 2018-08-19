@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Playlist from '../components/Playlist'
 import api from '../api'
+import ExporterService from '../services/exporter'
 
 class PlaylistContainer extends Component {
   constructor(props) {
@@ -39,6 +40,10 @@ class PlaylistContainer extends Component {
     }
   }
 
+  handleExportClick() {
+    ExporterService.exportPlaylists(this.state.items);
+  }
+
   componentWillMount() {
     this.fetchPlaylist();
   }
@@ -50,7 +55,10 @@ class PlaylistContainer extends Component {
 
     return (
       <div>
-        <Playlist items={items}/>
+        <Playlist
+          items={items}
+          handleExportClick={() => this.handleExportClick()}
+        />
       </div>
     );
 
