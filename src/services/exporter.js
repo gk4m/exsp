@@ -1,4 +1,4 @@
-import { saveAs } from 'file-saver/FileSaver';
+import {saveAs} from 'file-saver/FileSaver';
 import api from '../api'
 
 export default {
@@ -22,14 +22,36 @@ export default {
 
       pagination.offset = response.data.offset + pagination.limit;
       pagination.total = response.data.total;
-      pagination.items = [...pagination.items, ...response.data.items]
+      pagination.items = [...pagination.items, ...response.data.items];
     }
 
     return pagination;
   },
 
+  async _getPlaylistObject(playlist) {
+    const response = await this._fetchPlaylistTracks(playlist.owner.id, playlist.id);
+
+    return {
+      name: playlist.name,
+      public: playlist.public,
+      tracks: response.items,
+    };
+  },
+
   async exportPlaylists(playlists) {
-    const response = await this._fetchPlaylistTracks(playlists[0].owner.id, playlists[0].id);
-    console.log(response);
+    const toExport = [];
+
+    for(let i = 0, len = playlists.length; i < len; i++) {
+      const obj = await this._getPlaylistObject(playlists[i]);
+      toExport.push(obj);
+    }
+
+    const file = new File(
+      [JSON.stringify(toExport)],
+      `backup-${new Date().toLocaleDateString()}.json`,
+      {type: "application/json;charset=utf-8"}
+    );
+
+    saveAs(file);
   },
 }
