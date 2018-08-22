@@ -6,6 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
 
 const Playlist = (props) => {
   const {
@@ -27,7 +28,15 @@ const Playlist = (props) => {
 
   return (
     <div>
-      <button onClick={handleExportClick}>export all</button>
+      <Button
+        onClick={handleExportClick}
+        variant="contained"
+        color="secondary"
+        style={{marginTop: '10px'}}
+      >
+        Export all
+      </Button>
+
       <Table>
         <TableHead>
           <TableRow>

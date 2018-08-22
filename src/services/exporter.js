@@ -38,13 +38,18 @@ export default {
     };
   },
 
-  async exportPlaylists(playlists) {
+  async exportPlaylists(playlists, callback) {
     const toExport = [];
 
     for(let i = 0, len = playlists.length; i < len; i++) {
       const obj = await this._getPlaylistObject(playlists[i]);
+      const progress = Math.round(((100 * i) / len));
+
+      callback(progress);
       toExport.push(obj);
     }
+
+    callback(100);
 
     const file = new File(
       [JSON.stringify(toExport)],

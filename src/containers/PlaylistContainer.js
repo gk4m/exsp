@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import Playlist from '../components/Playlist'
 import api from '../api'
 import ExporterService from '../services/exporter'
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 class PlaylistContainer extends Component {
   constructor(props) {
@@ -11,7 +12,8 @@ class PlaylistContainer extends Component {
       limit: 50,
       offset: 0,
       total: 1,
-      items: []
+      items: [],
+      progress: 0,
     }
   }
 
@@ -41,7 +43,15 @@ class PlaylistContainer extends Component {
   }
 
   handleExportClick() {
-    ExporterService.exportPlaylists(this.state.items);
+    ExporterService.exportPlaylists(this.state.items, (progress) => {
+      this.setState({progress: progress});
+
+      if (progress === 100) {
+        setTimeout(() => {
+          this.setState({progress: 0});
+        }, 5000)
+      }
+    });
   }
 
   componentWillMount() {
@@ -50,16 +60,22 @@ class PlaylistContainer extends Component {
 
   render() {
     const {
-      items
+      items,
+      progress,
     } = this.state;
 
     return (
-      <div>
+      <Fragment>
+
+        {progress > 0 && (
+          <LinearProgress color="primary" variant="determinate" value={progress}/>
+        )}
+
         <Playlist
           items={items}
           handleExportClick={() => this.handleExportClick()}
         />
-      </div>
+      </Fragment>
     );
 
   }
