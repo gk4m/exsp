@@ -1,4 +1,5 @@
 import ls from '../utils/localStorage';
+import api from '../api';
 
 export default {
 
@@ -7,7 +8,7 @@ export default {
     const clientID = 'fe86f5b47d0b4cea8fd6eb37741aad92';
     const {host, protocol, pathname} = window.location;
     const redirectUri = `${protocol}//${host}${pathname}`;
-    const scope = 'playlist-read-private%20playlist-read-collaborative';
+    const scope = 'playlist-read-private%20playlist-read-collaborative%20playlist-modify-public%20playlist-modify-private';
     const responseType = 'token';
 
     window.location = `${api}?client_id=${clientID}&redirect_uri=${redirectUri}&scope=${scope}&response_type=${responseType}`;
@@ -42,6 +43,19 @@ export default {
     return ls.get('expiry');
   },
 
+  getUserId(){
+    return ls.get('user_id');
+  },
+
+  async initUser() {
+    try{
+      const response = await api.getUserProfile();
+      ls.set('user_id', response.data.id);
+    } catch (e) {
+      console.error(e);
+    }
+  },
+
   getTokensFromQuery() {
     const vars = window.location.hash.substring(1).split('&');
     let key = {};
@@ -54,6 +68,8 @@ export default {
     if (key.access_token && key.expires_in) {
       this.setAccessToken(key.access_token);
       this.setExpiryTime(key.expires_in);
+
+      this.initUser();
     }
   }
 };

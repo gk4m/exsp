@@ -14,7 +14,10 @@ class PlaylistContainer extends Component {
       total: 1,
       items: [],
       progress: 0,
-    }
+    };
+
+    this.handleExportClick = this.handleExportClick.bind(this);
+    this.handleImportChange = this.handleImportChange.bind(this);
   }
 
   async fetchPlaylist() {
@@ -54,7 +57,22 @@ class PlaylistContainer extends Component {
     });
   }
 
-  componentWillMount() {
+  handleImportChange(event) {
+    const {files} = event.target;
+    const reader = new FileReader();
+
+    reader.readAsText(files[0], 'UTF-8');
+
+    reader.onload = (evt) => {
+      ExporterService.importPlaylists(evt.target.result)
+    };
+
+    reader.onerror = () => {
+      console.error('Error on file import!')
+    }
+  }
+
+ componentWillMount() {
     this.fetchPlaylist();
   }
 
@@ -68,12 +86,17 @@ class PlaylistContainer extends Component {
       <Fragment>
 
         {progress > 0 && (
-          <LinearProgress color="primary" variant="determinate" value={progress}/>
+          <LinearProgress
+            color="primary"
+            variant="determinate"
+            value={progress}
+          />
         )}
 
         <Playlist
           items={items}
-          handleExportClick={() => this.handleExportClick()}
+          handleExportClick={this.handleExportClick}
+          handleImportChange={this.handleImportChange}
         />
       </Fragment>
     );

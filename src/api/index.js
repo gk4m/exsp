@@ -19,6 +19,23 @@ export default {
       }
     });
   },
+
+  getUserProfile(userID) {
+    return userID ? request.get(`users/${userID}`) : request.get('me')
+  },
+
+  createPlaylist(user_id, name, description) {
+    return request.post(`users/${user_id}/playlists`, {
+      name,
+      description
+    });
+  },
+
+  addTracksToPlaylist(playlist_id, uris) {
+    return request.post(`playlists/${playlist_id}/tracks`, {
+      uris,
+    });
+  },
 };
 
 

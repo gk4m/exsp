@@ -12,6 +12,7 @@ const Playlist = (props) => {
   const {
     items,
     handleExportClick,
+    handleImportChange
   } = props;
 
   const renderImage = (images) => {
@@ -32,10 +33,26 @@ const Playlist = (props) => {
         onClick={handleExportClick}
         variant="contained"
         color="secondary"
-        style={{marginTop: '10px'}}
+        style={{marginTop: '10px', marginRight: '10px'}}
       >
         Export all
       </Button>
+
+      <label htmlFor="import-file">
+        <Button
+          variant="contained"
+          color="primary"
+          component="span" style={{marginTop: '10px'}}>
+          Upload
+        </Button>
+        <input
+          accept=".json"
+          onChange={handleImportChange}
+          id="import-file"
+          type="file"
+          style={{display: 'none'}}
+        />
+      </label>
 
       <Table>
         <TableHead>
