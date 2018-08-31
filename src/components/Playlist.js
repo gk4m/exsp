@@ -43,7 +43,7 @@ const Playlist = (props) => {
           variant="contained"
           color="primary"
           component="span" style={{marginTop: '10px'}}>
-          Upload
+          Import
         </Button>
         <input
           accept=".json"
@@ -79,6 +79,5 @@ const Playlist = (props) => {
     </div>
   )
 };
-
 
 export default Playlist;

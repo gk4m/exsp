@@ -8,7 +8,16 @@ export default {
     const clientID = 'fe86f5b47d0b4cea8fd6eb37741aad92';
     const {host, protocol, pathname} = window.location;
     const redirectUri = `${protocol}//${host}${pathname}`;
-    const scope = 'playlist-read-private%20playlist-read-collaborative%20playlist-modify-public%20playlist-modify-private';
+    const scope = [
+      'playlist-read-private',
+      'playlist-read-collaborative',
+      'playlist-modify-public',
+      'playlist-modify-private',
+      'user-library-read'
+    ]
+    .toString()
+    .replace(',','%20');
+
     const responseType = 'token';
 
     window.location = `${api}?client_id=${clientID}&redirect_uri=${redirectUri}&scope=${scope}&response_type=${responseType}`;
