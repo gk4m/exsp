@@ -24,6 +24,35 @@ export default {
     return userID ? request.get(`users/${userID}`) : request.get('me')
   },
 
+  getTracks(offset, limit, market) {
+    return request.get('me/tracks', {
+      params: {
+        limit,
+        offset,
+        market
+      }
+    });
+  },
+
+  getAlbums(offset, limit, market) {
+    return request.get('me/albums', {
+      params: {
+        limit,
+        offset,
+        market
+      }
+    });
+  },
+
+  getFollowedArtists(limit, after) {
+    return request.get(`me/following?type=artist`, {
+      params: {
+        limit,
+        after
+      }
+    });
+  },
+
   createPlaylist(user_id, name, description) {
     return request.post(`users/${user_id}/playlists`, {
       name,

@@ -13,7 +13,8 @@ export default {
       'playlist-read-collaborative',
       'playlist-modify-public',
       'playlist-modify-private',
-      'user-library-read'
+      'user-library-read',
+      'user-follow-read',
     ]
     .toString()
     .replace(',','%20');
