@@ -3,7 +3,7 @@ import api from '../api'
 import auth from './auth'
 import {getParameterByName} from '../utils'
 
-export default {
+const exporter  = {
 
   async _fetch(callback) {
     const pagination = {
@@ -34,7 +34,7 @@ export default {
     return pagination;
   },
 
-  _fetchPlaylistTracks(user_id, playlist_id) {
+  fetchPlaylistTracks(user_id, playlist_id) {
     return this._fetch((offset, limit) => {
       return api.getPlaylistTracks(
         user_id,
@@ -46,19 +46,25 @@ export default {
     })
   },
 
-  _fetchAlbums() {
+  fetchPlaylists() {
+    return this._fetch((offset, limit) => {
+      return api.getUserPlaylists(offset, limit);
+    })
+  },
+
+  fetchAlbums() {
     return this._fetch((offset, limit) => {
       return api.getAlbums(offset, limit);
     })
   },
 
-  _fetchUserSavedTracks() {
+  fetchUserSavedTracks() {
     return this._fetch((offset, limit) => {
       return api.getTracks(offset, limit);
     })
   },
 
-  async _fetchArtists(){
+  async fetchArtists() {
     const pagination = {
       limit: 50,
       offset: 0,
@@ -91,7 +97,7 @@ export default {
   },
 
   async _getPlaylistObject(playlist) {
-    const response = await this._fetchPlaylistTracks(playlist.owner.id, playlist.id);
+    const response = await this.fetchPlaylistTracks(playlist.owner.id, playlist.id);
 
     return {
       name: playlist.name,
@@ -100,18 +106,18 @@ export default {
     };
   },
 
-  async exportPlaylists(playlists, callback) {
+  async exportPlaylists(selectedPlaylist) {
+    if (!selectedPlaylist.length) return;
+
     const toExport = [];
+    const {items: playlists} = await exporter.fetchPlaylists();
 
     for (let i = 0, len = playlists.length; i < len; i++) {
-      const obj = await this._getPlaylistObject(playlists[i]);
-      const progress = Math.round(((100 * i) / len));
-
-      callback(progress);
-      toExport.push(obj);
+      if(selectedPlaylist.indexOf(playlists[i].id) > -1) {
+        const obj = await this._getPlaylistObject(playlists[i]);
+        toExport.push(obj);
+      }
     }
-
-    callback(100);
 
     const file = new File(
       [JSON.stringify(toExport)],
@@ -141,4 +147,6 @@ export default {
   async doExport() {
     console.info('doExport');
   }
-}
+};
+
+export default exporter;

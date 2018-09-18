@@ -1,11 +1,11 @@
 import request from './request'
 
 export default {
-  getUserPlaylists(limit, offset) {
+  getUserPlaylists(offset, limit) {
     return request.get('me/playlists', {
       params: {
-        limit,
-        offset
+        offset,
+        limit
       }
     });
   },
