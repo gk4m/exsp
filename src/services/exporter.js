@@ -128,6 +128,10 @@ const exporter  = {
     saveAs(file);
   },
 
+  exportAlbums() {
+    console.info('exportAlbums');
+  },
+
   importPlaylists(data) {
     const json = JSON.parse(data);
     const user_id = auth.getUserId();

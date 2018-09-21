@@ -4,7 +4,7 @@ import ExporterService from '../services/exporter'
 import TableCell from '@material-ui/core/TableCell';
 import Avatar from '@material-ui/core/Avatar';
 
-class PlaylistContainer extends Component {
+class AlbumContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -15,14 +15,14 @@ class PlaylistContainer extends Component {
   }
 
   handleExportClick = (selected) => {
-    ExporterService.exportPlaylists(selected);
+    ExporterService.exportAlbums(selected);
   };
 
   async componentWillMount() {
-    const response = await ExporterService.fetchPlaylists();
+    const response = await ExporterService.fetchAlbums();
 
     this.setState({
-      items: [...response.items]
+      items: [...response.items.map(item => item.album)]
     });
   }
 
@@ -45,16 +45,20 @@ class PlaylistContainer extends Component {
           items={items}
           handleActionClick={this.handleExportClick}
           renderBody={(item)=> (
-            <Fragment>
-              <TableCell>
-                {item.images[0] && <Avatar alt="" src={item.images[0].url}/>}
-              </TableCell>
-              <TableCell>
-                {item.name}
-              </TableCell>
-              <TableCell>{item.owner.display_name}</TableCell>
-              <TableCell numeric>{item.tracks.total}</TableCell>
-            </Fragment>
+           <Fragment>
+             <TableCell>
+               {item.images[0] && <Avatar alt="" src={item.images[0].url}/>}
+             </TableCell>
+             <TableCell>
+               {item.name}
+             </TableCell>
+             <TableCell>
+               {item.artists.map((artist, index) => index > 0 ? `${artist.name},` : artist.name)}
+             </TableCell>
+             <TableCell numeric>
+               {item.total_tracks}
+             </TableCell>
+           </Fragment>
           )}
         />
       </Fragment>
@@ -62,4 +66,4 @@ class PlaylistContainer extends Component {
   }
 }
 
-export default PlaylistContainer;
+export default AlbumContainer;

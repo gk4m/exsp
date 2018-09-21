@@ -7,6 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AuthService from '../services/auth';
 import PlaylistContainer from '../containers/PlaylistContainer';
+import AlbumContainer from '../containers/AlbumContainer';
 
 const styles = theme => ({
   layout: {
@@ -44,6 +45,7 @@ const App = (props) => {
 
       <main className={classes.layout}>
         <PlaylistContainer/>
+        <AlbumContainer/>
       </main>
 
     </div>

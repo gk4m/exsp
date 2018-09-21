@@ -7,8 +7,6 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import Avatar from '@material-ui/core/Avatar';
-
 import TableHead from './TableHead';
 import TableToolbar from './TableToolbar';
 
@@ -17,19 +15,16 @@ const styles = theme => ({
     width: '100%',
     marginTop: theme.spacing.unit * 3,
   },
-  table: {
-    minWidth: 1020,
-  },
   tableWrapper: {
     overflowX: 'auto',
   },
 });
 
-class PlaylistTable extends React.Component {
+class CustomTable extends React.Component {
   state = {
     selected: [],
     page: 0,
-    rowsPerPage: 9,
+    rowsPerPage: 5,
   };
 
   handleSelectAllClick = event => {
@@ -83,7 +78,10 @@ class PlaylistTable extends React.Component {
     const {
       classes,
       items,
-      handleExportClick,
+      handleActionClick,
+      title,
+      headRows,
+      renderBody,
     } = this.props;
 
     const {
@@ -91,13 +89,6 @@ class PlaylistTable extends React.Component {
       rowsPerPage,
       page,
     } = this.state;
-
-    const rows = [
-      {id: 'image', numeric: false, disablePadding: false, label: 'Cover'},
-      {id: 'name', numeric: false, disablePadding: false, label: 'Name'},
-      {id: 'owner', numeric: false, disablePadding: false, label: 'Owner'},
-      {id: 'tracks', numeric: true, disablePadding: false, label: 'Tracks'},
-    ];
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, items.length - page * rowsPerPage);
 
@@ -107,18 +98,18 @@ class PlaylistTable extends React.Component {
         <TableToolbar
           numSelected={selected.length}
           selected={selected}
-          action={handleExportClick}
-          title="Playlist"
+          action={handleActionClick}
+          title={title}
         />
 
         <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="playlists">
+          <Table className={classes.table} aria-labelledby={title}>
 
             <TableHead
               numSelected={selected.length}
               onSelectAllClick={this.handleSelectAllClick}
               rowCount={items.length}
-              rows={rows}
+              rows={headRows}
             />
 
             <TableBody>
@@ -140,14 +131,9 @@ class PlaylistTable extends React.Component {
                       <TableCell padding="checkbox">
                         <Checkbox checked={isSelected}/>
                       </TableCell>
-                      <TableCell>
-                        {item.images[0] && <Avatar alt="" src={item.images[0].url}/>}
-                      </TableCell>
-                      <TableCell>
-                        {item.name}
-                      </TableCell>
-                      <TableCell>{item.owner.display_name}</TableCell>
-                      <TableCell numeric>{item.tracks.total}</TableCell>
+                      {renderBody && (
+                        renderBody(item)
+                      )}
                     </TableRow>
                   );
                 })}
@@ -181,4 +167,7 @@ class PlaylistTable extends React.Component {
   }
 }
 
-export default withStyles(styles)(PlaylistTable);
+CustomTable.propTypes = {
+};
+
+export default withStyles(styles)(CustomTable);
