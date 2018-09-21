@@ -9,8 +9,8 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
 
-import PlaylistTableHead from './PlaylistTableHead';
-import PlaylistTableToolbar from './PlaylistTableToolbar';
+import TableHead from './TableHead';
+import TableToolbar from './TableToolbar';
 
 const styles = theme => ({
   root: {
@@ -92,24 +92,33 @@ class PlaylistTable extends React.Component {
       page,
     } = this.state;
 
+    const rows = [
+      {id: 'image', numeric: false, disablePadding: false, label: 'Cover'},
+      {id: 'name', numeric: false, disablePadding: false, label: 'Name'},
+      {id: 'owner', numeric: false, disablePadding: false, label: 'Owner'},
+      {id: 'tracks', numeric: true, disablePadding: false, label: 'Tracks'},
+    ];
+
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, items.length - page * rowsPerPage);
 
     return (
       <Paper className={classes.root}>
 
-        <PlaylistTableToolbar
+        <TableToolbar
           numSelected={selected.length}
           selected={selected}
           action={handleExportClick}
+          title="Playlist"
         />
 
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="playlists">
 
-            <PlaylistTableHead
+            <TableHead
               numSelected={selected.length}
               onSelectAllClick={this.handleSelectAllClick}
               rowCount={items.length}
+              rows={rows}
             />
 
             <TableBody>

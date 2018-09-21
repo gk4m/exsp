@@ -34,7 +34,7 @@ const styles = theme => ({
   },
 });
 
-class PlaylistTableToolbar extends React.Component {
+class TableToolbar extends React.Component {
 
   render() {
     const {
@@ -42,6 +42,7 @@ class PlaylistTableToolbar extends React.Component {
       selected,
       classes,
       action,
+      title,
     } = this.props;
 
     return (
@@ -57,7 +58,7 @@ class PlaylistTableToolbar extends React.Component {
             </Typography>
           ) : (
             <Typography variant="title" id="tableTitle">
-              Playlists
+              {title}
             </Typography>
           )}
         </div>
@@ -90,11 +91,12 @@ class PlaylistTableToolbar extends React.Component {
       </Toolbar>
     );
   }
-};
+}
 
-PlaylistTableToolbar.propTypes = {
+TableToolbar.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
+  title: PropTypes.string,
 };
 
-export default withStyles(styles)(PlaylistTableToolbar);
+export default withStyles(styles)(TableToolbar);

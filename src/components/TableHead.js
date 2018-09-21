@@ -5,19 +5,13 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 
-const rows = [
-  {id: 'image', numeric: false, disablePadding: false, label: ''},
-  {id: 'name', numeric: false, disablePadding: false, label: 'Name'},
-  {id: 'owner', numeric: false, disablePadding: false, label: 'Owner'},
-  {id: 'tracks', numeric: true, disablePadding: false, label: 'Tracks'},
-];
-
 class PlaylistTableHead extends React.Component {
   render() {
     const {
       onSelectAllClick,
       numSelected,
-      rowCount
+      rowCount,
+      rows,
     } = this.props;
 
     return (
@@ -53,6 +47,7 @@ PlaylistTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
   rowCount: PropTypes.number.isRequired,
+  rows: PropTypes.array.isRequired
 };
 
 export default PlaylistTableHead;
