@@ -65,6 +65,10 @@ export default {
       uris,
     });
   },
+
+  saveAlbums(ids) {
+    return request.put('me/albums', {
+      ids
+    });
+  },
 };
-
-

@@ -1,8 +1,13 @@
 import React, {Component, Fragment} from 'react';
-import CustomTable from '../components/CustomTable'
-import ExporterService from '../services/exporter'
 import TableCell from '@material-ui/core/TableCell';
 import Avatar from '@material-ui/core/Avatar';
+import CustomTable from '../components/CustomTable'
+
+import {
+  Repository,
+  Exporter,
+  ResourceType
+} from '../services'
 
 class PlaylistContainer extends Component {
   constructor(props) {
@@ -15,11 +20,11 @@ class PlaylistContainer extends Component {
   }
 
   handleExportClick = (selected) => {
-    ExporterService.exportPlaylists(selected);
+    Exporter.doExport(selected, ResourceType.PLAYLIST);
   };
 
   async componentWillMount() {
-    const response = await ExporterService.fetchPlaylists();
+    const response = await Repository.fetchPlaylists();
 
     this.setState({
       items: [...response.items]
@@ -41,6 +46,7 @@ class PlaylistContainer extends Component {
     return (
       <Fragment>
         <CustomTable
+          title="Playlists"
           headRows={rows}
           items={items}
           handleActionClick={this.handleExportClick}

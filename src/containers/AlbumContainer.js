@@ -1,8 +1,13 @@
 import React, {Component, Fragment} from 'react';
-import CustomTable from '../components/CustomTable'
-import ExporterService from '../services/exporter'
 import TableCell from '@material-ui/core/TableCell';
 import Avatar from '@material-ui/core/Avatar';
+import CustomTable from '../components/CustomTable'
+
+import {
+  Repository,
+  Exporter,
+  ResourceType
+} from '../services'
 
 class AlbumContainer extends Component {
   constructor(props) {
@@ -10,16 +15,15 @@ class AlbumContainer extends Component {
 
     this.state = {
       items: [],
-      progress: 0,
     };
   }
 
   handleExportClick = (selected) => {
-    ExporterService.exportAlbums(selected);
+    Exporter.doExport(selected, ResourceType.ALBUM);
   };
 
   async componentWillMount() {
-    const response = await ExporterService.fetchAlbums();
+    const response = await Repository.fetchAlbums();
 
     this.setState({
       items: [...response.items.map(item => item.album)]
@@ -41,6 +45,7 @@ class AlbumContainer extends Component {
     return (
       <Fragment>
         <CustomTable
+          title="Albums"
           headRows={rows}
           items={items}
           handleActionClick={this.handleExportClick}
@@ -53,7 +58,9 @@ class AlbumContainer extends Component {
                {item.name}
              </TableCell>
              <TableCell>
-               {item.artists.map((artist, index) => index > 0 ? `${artist.name},` : artist.name)}
+               {item.artists.map((artist, index) => index > 0
+                 ? `${artist.name},`
+                 : artist.name)}
              </TableCell>
              <TableCell numeric>
                {item.total_tracks}
