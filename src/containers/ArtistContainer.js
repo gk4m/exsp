@@ -42,7 +42,16 @@ class ArtistContainer extends Component {
   }
 
   renderLoading() {
-    return <div style={{textAlign: "center", margin: "15px"}}><CircularProgress  color="secondary" /></div>;
+    const style = {
+      textAlign: "center",
+      margin: "15px"
+    };
+
+    return (
+      <div style={style}>
+        <CircularProgress color="secondary" />
+      </div>
+    );
   }
 
   renderError() {
