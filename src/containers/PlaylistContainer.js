@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import Avatar from '@material-ui/core/Avatar';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import CustomTable from '../components/CustomTable'
 
 import {
@@ -15,7 +16,7 @@ class PlaylistContainer extends Component {
 
     this.state = {
       items: [],
-      progress: 0,
+      loading: true,
     };
   }
 
@@ -24,14 +25,31 @@ class PlaylistContainer extends Component {
   };
 
   async componentWillMount() {
-    const response = await Repository.fetchPlaylists();
+    try {
+      const response = await Repository.fetchPlaylists();
 
-    this.setState({
-      items: [...response.items]
-    });
+      this.setState({
+        items: [...response.items],
+        loading: false,
+      });
+
+    } catch (e) {
+      this.setState({
+        loading: false,
+        e
+      });
+    }
   }
 
-  render() {
+  renderLoading() {
+    return <div style={{textAlign: "center", margin: "15px"}}><CircularProgress  color="secondary" /></div>;
+  }
+
+  renderError() {
+    return <div>I'm sorry! Please try again.</div>;
+  }
+
+  renderTable() {
     const {
       items,
     } = this.state;
@@ -65,6 +83,21 @@ class PlaylistContainer extends Component {
         />
       </Fragment>
     );
+  }
+
+  render() {
+    const {
+      loading,
+      items,
+    } = this.state;
+
+    if (loading) {
+      return this.renderLoading();
+    } else if (items && items.length) {
+      return this.renderTable();
+    } else {
+      return this.renderError();
+    }
   }
 }
 
