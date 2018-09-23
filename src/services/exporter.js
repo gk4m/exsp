@@ -1,5 +1,5 @@
 import {saveAs} from 'file-saver/FileSaver';
-import {ResourceType} from './data/ResourceType'
+import {ResourceType} from './types/ResourceType'
 import Repository from './repository'
 
 const exporter  = {
@@ -39,24 +39,22 @@ const exporter  = {
   },
 
   _exportAlbums(selected) {
-    console.info('exportAlbums', selected);
-
     const toExport = {};
 
     toExport.albums = selected;
 
     exporter._saveAs(toExport);
-
   },
 
   _exportArtists(selected) {
-    //@todo _exportArtists
-    console.info('_exportArtists', selected);
+    const toExport = {};
+
+    toExport.artists = selected;
+
+    exporter._saveAs(toExport);
   },
 
   async doExport(selected, type) {
-    console.info('doExport');
-    //@todo add message if there is no selected rows
     if (!selected.length) return;
 
     switch (type) {

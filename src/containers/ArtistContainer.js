@@ -9,7 +9,7 @@ import {
   ResourceType
 } from '../services'
 
-class AlbumContainer extends Component {
+class ArtistContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -19,14 +19,14 @@ class AlbumContainer extends Component {
   }
 
   handleExportClick = (selected) => {
-    Exporter.doExport(selected, ResourceType.ALBUM);
+    Exporter.doExport(selected, ResourceType.ARTIST);
   };
 
   async componentWillMount() {
-    const response = await Repository.fetchAlbums();
+    const response = await Repository.fetchArtists();
 
     this.setState({
-      items: [...response.items.map(item => item.album)]
+      items: [...response.items]
     });
   }
 
@@ -38,14 +38,14 @@ class AlbumContainer extends Component {
     const rows = [
       {id: 'image', numeric: false, disablePadding: false, label: 'Cover'},
       {id: 'name', numeric: false, disablePadding: false, label: 'Name'},
-      {id: 'artists', numeric: false, disablePadding: false, label: 'Artists'},
-      {id: 'tracks', numeric: true, disablePadding: false, label: 'Tracks'},
+      {id: 'genres', numeric: false, disablePadding: false, label: 'Genres'},
+      {id: 'followers', numeric: true, disablePadding: false, label: 'Followers'},
     ];
 
     return (
       <Fragment>
         <CustomTable
-          title="Albums"
+          title="Artists"
           headRows={rows}
           items={items}
           handleActionClick={this.handleExportClick}
@@ -58,12 +58,12 @@ class AlbumContainer extends Component {
                {item.name}
              </TableCell>
              <TableCell>
-               {item.artists.map((artist, index) => index > 0
-                 ? `${artist.name}, `
-                 : artist.name)}
+               {item.genres.map((genre, index) => index > 0
+                 ? `${genre}, `
+                 : genre)}
              </TableCell>
              <TableCell numeric>
-               {item.total_tracks}
+               {item.followers.total}
              </TableCell>
            </Fragment>
           )}
@@ -73,4 +73,4 @@ class AlbumContainer extends Component {
   }
 }
 
-export default AlbumContainer;
+export default ArtistContainer;

@@ -1,6 +1,6 @@
 import api from '../api'
 import auth from './auth'
-import {ResourceType} from './data/ResourceType'
+import {ResourceType} from './types/ResourceType'
 
 const importer  = {
 

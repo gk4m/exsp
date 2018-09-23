@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import {withStyles} from '@material-ui/core/styles';
@@ -64,29 +63,19 @@ class TableToolbar extends React.Component {
         </div>
         <div className={classes.spacer}/>
         <div className={classes.actions}>
-          {numSelected > 0 ? (
             <Tooltip title="Export">
-              <Button
-                onClick={() => action(selected)}
-                variant="contained"
-                color="secondary"
-                size="small"
-              >
-                Export
-              </Button>
+              <div>
+                <Button
+                  onClick={() => action(selected)}
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  disabled={!(numSelected > 0)}
+                >
+                  Export
+                </Button>
+              </div>
             </Tooltip>
-          ) : (
-            <Tooltip title="Export">
-              <Button
-                onClick={() => action(selected)}
-                variant="contained"
-                color="secondary"
-                size="small"
-              >
-                Export
-              </Button>
-            </Tooltip>
-          )}
         </div>
       </Toolbar>
     );

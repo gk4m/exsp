@@ -8,11 +8,13 @@ import Typography from '@material-ui/core/Typography';
 import AuthService from '../services/auth';
 import PlaylistContainer from '../containers/PlaylistContainer';
 import AlbumContainer from '../containers/AlbumContainer';
+import ArtistContainer from '../containers/ArtistContainer';
 
 const styles = theme => ({
   layout: {
     width: 'auto',
     marginTop: 30,
+    marginBottom: 30,
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
     [theme.breakpoints.up(600 + theme.spacing.unit * 2 * 2)]: {
@@ -46,6 +48,7 @@ const App = (props) => {
       <main className={classes.layout}>
         <PlaylistContainer/>
         <AlbumContainer/>
+        <ArtistContainer/>
       </main>
 
     </div>

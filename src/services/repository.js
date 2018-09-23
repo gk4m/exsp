@@ -85,7 +85,6 @@ const repository  = {
         pagination.total = total;
         pagination.items.push(...items);
         pagination.offset = pagination.items.length;
-
       }
     } catch (e) {
       console.error(e)
