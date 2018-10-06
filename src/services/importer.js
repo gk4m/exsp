@@ -1,18 +1,31 @@
 import api from '../api'
 import auth from './auth'
-import {ResourceType} from './types/ResourceType'
 
-const importer  = {
+const importer = {
+
+  _chunk(arr, chunkSize) {
+    let result = [];
+
+    for (let i = 0, len = arr.length; i < len; i += chunkSize){
+      result.push(arr.slice(i, i + chunkSize));
+    }
+
+    return result;
+  },
 
   _importPlaylists(data) {
-    const json = JSON.parse(data);
     const user_id = auth.getUserId();
 
-    json.forEach(async (item) => {
-      const uris = item.tracks.map(el => el.track.uri);
-      const response = await api.createPlaylist(user_id, item.name);
+    data.forEach(async (item) => {
+       const uris = item.tracks.map(el => el.track.uri);
 
-      await api.addTracksToPlaylist(response.data.id, uris);
+       //@todo handle if 503 occurred
+       const response = await api.createPlaylist(user_id, item.name);
+
+       //You can add a maximum of 100 tracks per request.
+       this._chunk(uris, 100).forEach(async (item) => {
+         await api.addTracksToPlaylist(response.data.id, item);
+       });
     })
   },
 
@@ -24,22 +37,24 @@ const importer  = {
     //@todo _importArtists
   },
 
+  async doImport(json) {
+    const data = JSON.parse(json);
+    const {
+      playlists,
+      albums,
+      artists,
+    } = data;
 
-  async doImport(data, type) {
-    console.info('doImport');
+    if (playlists) {
+      this._importPlaylists(playlists)
+    }
 
-    switch (type) {
-      case ResourceType.PLAYLIST:
-        this._importPlaylists(data);
-        break;
-      case ResourceType.ALBUM:
-        this._importAlbum(data);
-        break;
-      case ResourceType.ARTIST:
-        this._importArtists(data);
-        break;
-      default:
-        break;
+    if (albums) {
+      this._importAlbum(albums);
+    }
+
+    if (artists) {
+      this._importArtists(artists);
     }
   },
 };

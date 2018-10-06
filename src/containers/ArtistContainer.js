@@ -104,14 +104,17 @@ class ArtistContainer extends Component {
     const {
       loading,
       items,
+      e,
     } = this.state;
 
     if (loading) {
       return this.renderLoading();
     } else if (items && items.length) {
       return this.renderTable();
-    } else {
+    } else if(e){
       return this.renderError();
+    } else {
+      return (<p>There is no artists.</p>)
     }
   }
 }

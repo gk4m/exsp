@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AuthService from '../services/auth';
+import ActionBarContainer from '../containers/ActionBarContainer';
 import PlaylistContainer from '../containers/PlaylistContainer';
 import AlbumContainer from '../containers/AlbumContainer';
 import ArtistContainer from '../containers/ArtistContainer';
@@ -46,6 +47,7 @@ const App = (props) => {
       </AppBar>
 
       <main className={classes.layout}>
+        <ActionBarContainer/>
         <PlaylistContainer/>
         <AlbumContainer/>
         <ArtistContainer/>
