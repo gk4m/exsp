@@ -43,7 +43,7 @@ const exporter  = {
 
     toExport.albums = selected;
 
-    exporter._saveAs({albums: toExport});
+    exporter._saveAs(toExport);
   },
 
   _exportArtists(selected) {
@@ -51,7 +51,7 @@ const exporter  = {
 
     toExport.artists = selected;
 
-    exporter._saveAs({artists: toExport});
+    exporter._saveAs(toExport);
   },
 
   async doExport(selected, type) {

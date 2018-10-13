@@ -19,10 +19,8 @@ const importer = {
     data.forEach(async (item) => {
        const uris = item.tracks.map(el => el.track.uri);
 
-       //@todo handle if 503 occurred
        const response = await api.createPlaylist(user_id, item.name);
 
-       //You can add a maximum of 100 tracks per request.
        this._chunk(uris, 100).forEach(async (item) => {
          await api.addTracksToPlaylist(response.data.id, item);
        });
@@ -30,11 +28,15 @@ const importer = {
   },
 
   _importAlbum(data) {
-    //@todo _importAlbum
+    this._chunk(data, 50).forEach(async (item) => {
+      await api.saveAlbums(item)
+    });
   },
 
   _importArtists(data) {
-    //@todo _importArtists
+    this._chunk(data, 50).forEach(async (item) => {
+      await api.follow('artist', item)
+    });
   },
 
   async doImport(json) {

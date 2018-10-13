@@ -71,4 +71,10 @@ export default {
       ids
     });
   },
+
+  follow(type, ids) {
+    return request.put(`me/following?type=${type}`, {
+      ids
+    });
+  },
 };
