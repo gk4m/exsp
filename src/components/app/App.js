@@ -5,11 +5,11 @@ import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import AuthService from '../services/auth';
-import ActionBarContainer from '../containers/ActionBarContainer';
-import PlaylistContainer from '../containers/PlaylistContainer';
-import AlbumContainer from '../containers/AlbumContainer';
-import ArtistContainer from '../containers/ArtistContainer';
+import AuthService from '@/services/auth';
+import {ActionBarContainer} from '@/components/actionBar';
+import {PlaylistContainer} from '@/components/playlist';
+import {AlbumContainer} from '@/components/album';
+import {ArtistContainer} from '@/components/artist';
 
 const styles = theme => ({
   layout: {
