@@ -1,4 +1,5 @@
 import React from 'react'
+import ReduxToastr from 'react-redux-toastr'
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -38,6 +39,16 @@ const App = (props) => {
 
   return (
     <div id="app">
+      <ReduxToastr
+        timeOut={4000}
+        newestOnTop={false}
+        preventDuplicates
+        position="top-left"
+        transitionIn="fadeIn"
+        transitionOut="fadeOut"
+        progressBar
+        closeOnToastrClick
+      />
 
       <AppBar position="static" color='primary'>
         <Toolbar>

@@ -44,6 +44,7 @@
     "react-dev-utils": "^5.0.1",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
+    "react-redux-toastr": "^7.4.0",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.1",
     "redux-logger": "^3.0.6",
