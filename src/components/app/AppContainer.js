@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import AuthService from '../services/auth';
-import App from '../components/App';
+import AuthService from '@/services/auth';
+import App from './App';
 
-import ls from '../utils/localStorage';
+import ls from '@/utils/localStorage';
 
-class AppContainer extends Component {
+export class AppContainer extends Component {
 
   componentDidMount() {
     if (!ls.get('token')) {
@@ -20,5 +20,3 @@ class AppContainer extends Component {
     );
   }
 }
-
-export default AppContainer;

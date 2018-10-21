@@ -2,14 +2,13 @@ import React, {Component, Fragment} from 'react';
 import TableCell from '@material-ui/core/TableCell';
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import CustomTable from '../components/CustomTable'
+import {CustomTable} from '@/components/customTable'
 import {
-  Repository,
   Exporter,
   ResourceType
-} from '../services'
+} from '@/services';
 
-class AlbumContainer extends Component {
+export class Album extends Component {
   constructor(props) {
     super(props);
 
@@ -19,28 +18,31 @@ class AlbumContainer extends Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    const { albums } = this.props;
+    const { albums: prevAlbums } = prevProps;
+
+    if (!albums.isLoading && prevAlbums.isLoading && !albums.failure) {
+      this.setState({
+        items:  [...albums.data.items.map(item => item.album)],
+        loading: false,
+      });
+    }
+  }
+
   handleExportClick = (selected) => {
     Exporter.doExport(selected, ResourceType.ALBUM);
   };
 
   async componentWillMount() {
-    try {
-      const response = await Repository.fetchAlbums();
+    const {
+      fetchAlbums,
+    } = this.props;
 
-      this.setState({
-        items: [...response.items.map(item => item.album)],
-        loading: false,
-      });
-
-    } catch (e) {
-      this.setState({
-        loading: false,
-        e
-      });
-    }
+    fetchAlbums();
   }
 
-  renderLoading() {
+  renderLoading = () => {
     const style = {
       textAlign: "center",
       margin: "15px"
@@ -51,11 +53,11 @@ class AlbumContainer extends Component {
         <CircularProgress color="secondary" />
       </div>
     );
-  }
+  };
 
-  renderError() {
+  renderError = () => {
     return <div>I'm sorry! Please try again.</div>;
-  }
+  };
 
   renderTable() {
     const {
@@ -117,5 +119,3 @@ class AlbumContainer extends Component {
     }
   }
 }
-
-export default AlbumContainer;
