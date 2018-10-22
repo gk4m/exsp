@@ -4,10 +4,10 @@ import Repository from './repository'
 
 const exporter  = {
 
-  _saveAs(data) {
+  _saveAs(data, name='backup') {
     const file = new File(
       [JSON.stringify(data)],
-      `backup-${new Date().toLocaleDateString()}.json`,
+      `${name}-${new Date().toLocaleDateString()}.json`,
       {type: "application/json;charset=utf-8"}
     );
 
@@ -35,7 +35,7 @@ const exporter  = {
       }
     }
 
-    exporter._saveAs({playlists: toExport});
+    exporter._saveAs({playlists: toExport}, 'playlists-backup');
   },
 
   _exportAlbums(selected) {
@@ -43,7 +43,7 @@ const exporter  = {
 
     toExport.albums = selected;
 
-    exporter._saveAs(toExport);
+    exporter._saveAs(toExport, 'albums-backup');
   },
 
   _exportArtists(selected) {
@@ -51,7 +51,7 @@ const exporter  = {
 
     toExport.artists = selected;
 
-    exporter._saveAs(toExport);
+    exporter._saveAs(toExport, 'artists-backup');
   },
 
   async doExport(selected, type) {

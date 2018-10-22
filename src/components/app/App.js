@@ -43,7 +43,7 @@ const App = (props) => {
         timeOut={4000}
         newestOnTop={false}
         preventDuplicates
-        position="top-left"
+        position="bottom-left"
         transitionIn="fadeIn"
         transitionOut="fadeOut"
         progressBar

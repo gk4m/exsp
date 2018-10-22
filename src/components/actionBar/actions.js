@@ -1,12 +1,8 @@
 import { createAction } from 'redux-actions';
-
 import { ACTION } from '@/redux/action';
+import {Importer} from '@/services';
 
-import {
-  Repository,
-} from '@/services';
-
-export const exportPlaylists = createAction(ACTION.PLAYLIST.FETCH_LIST, async () => {
-  return await Repository.fetchPlaylists();
+export const doImport = createAction(ACTION.IMPORT, async (data) => {
+  return await Importer.doImport(data)
 });
 
