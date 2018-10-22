@@ -1,22 +1,52 @@
 import React, {Component} from 'react';
+import {toastr} from 'react-redux-toastr'
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import ImporterService from '@/services/importer'
 
 export class ActionBar extends Component {
 
+  async componentDidUpdate(prevProps) {
+    const {
+      imported,
+      fetchPlaylists,
+      fetchArtists,
+      fetchAlbums,
+    } = this.props;
+    const {imported: prevImported} = prevProps;
+
+    if (!imported.isLoading && prevImported.isLoading) {
+      if (imported.failure) {
+        toastr.error('Error', imported.data);
+      } else {
+        toastr.success('Imported!', 'File has been imported correctly.');
+
+        setTimeout(() => {
+          fetchAlbums();
+          fetchPlaylists();
+          fetchArtists();
+        }, 500);
+      }
+    }
+  }
+
   handleImportChange = (event) => {
+    const {doImport} = this.props;
+
     const {files} = event.target;
     const reader = new FileReader();
 
     reader.readAsText(files[0], 'UTF-8');
 
     reader.onload = (evt) => {
-      ImporterService.doImport(evt.target.result)
+      try {
+        doImport(evt.target.result);
+      } catch (e) {
+        console.error(e);
+      }
     };
 
     reader.onerror = () => {
-      console.error('Error on file import!')
+      toastr.error('Error', 'Error on file import!');
     }
   };
 
@@ -45,5 +75,7 @@ export class ActionBar extends Component {
 
 ActionBar.propTypes = {
   fetchPlaylists: PropTypes.func.isRequired,
+  fetchArtists: PropTypes.func.isRequired,
+  fetchAlbums: PropTypes.func.isRequired,
 };
 
