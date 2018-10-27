@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from 'react';
+import PropTypes from 'prop-types';
 import TableCell from '@material-ui/core/TableCell';
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -7,6 +8,7 @@ import {
   Exporter,
   ResourceType
 } from '@/services';
+import {ActionBar} from "../actionBar/ActionBar";
 
 export class Album extends Component {
   constructor(props) {
@@ -30,10 +32,6 @@ export class Album extends Component {
     }
   }
 
-  handleExportClick = (selected) => {
-    Exporter.doExport(selected, ResourceType.ALBUM);
-  };
-
   async componentWillMount() {
     const {
       fetchAlbums,
@@ -41,6 +39,10 @@ export class Album extends Component {
 
     fetchAlbums();
   }
+
+  handleExportClick = (selected) => {
+    Exporter.doExport(selected, ResourceType.ALBUM);
+  };
 
   renderLoading = () => {
     const style = {
@@ -119,3 +121,8 @@ export class Album extends Component {
     }
   }
 }
+
+Album.propTypes = {
+  fetchAlbums: PropTypes.func.isRequired,
+  albums: PropTypes.object.isRequired,
+};

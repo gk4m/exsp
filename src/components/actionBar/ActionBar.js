@@ -74,8 +74,10 @@ export class ActionBar extends Component {
 }
 
 ActionBar.propTypes = {
+  doImport: PropTypes.func.isRequired,
   fetchPlaylists: PropTypes.func.isRequired,
   fetchArtists: PropTypes.func.isRequired,
   fetchAlbums: PropTypes.func.isRequired,
+  imported: PropTypes.object.isRequired,
 };
 

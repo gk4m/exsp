@@ -4,7 +4,7 @@ import api from '../api';
 export default {
 
   async login() {
-    const api = 'https://accounts.spotify.com/authorize';
+    const apiUrl = 'https://accounts.spotify.com/authorize';
     const clientID = 'fe86f5b47d0b4cea8fd6eb37741aad92';
     const {host, protocol, pathname} = window.location;
     const redirectUri = `${protocol}//${host}${pathname}`;
@@ -23,7 +23,7 @@ export default {
 
     const responseType = 'token';
 
-    window.location = `${api}?client_id=${clientID}&redirect_uri=${redirectUri}&scope=${scope}&response_type=${responseType}`;
+    window.location = `${apiUrl}?client_id=${clientID}&redirect_uri=${redirectUri}&scope=${scope}&response_type=${responseType}`;
   },
 
   logout() {

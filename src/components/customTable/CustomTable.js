@@ -167,7 +167,4 @@ class CustomTable extends React.Component {
   }
 }
 
-CustomTable.propTypes = {
-};
-
 export default withStyles(styles)(CustomTable);

@@ -15,8 +15,6 @@ request.interceptors.request.use(function (config) {
 
 request.interceptors.response.use(null, (error) => {
   const {status, config} = error.response;
-  console.info('status', status);
-  console.info('config', config);
 
   if (AuthService.getAccessToken() && status === 401) {
     ls.clear();
