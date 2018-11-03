@@ -1,11 +1,11 @@
 import React, {Component, Fragment} from 'react';
+import PropTypes from 'prop-types';
 import TableCell from '@material-ui/core/TableCell';
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {CustomTable} from '@/components/customTable';
 
 import {
-  Repository,
   Exporter,
   ResourceType
 } from '@/services';
@@ -121,3 +121,8 @@ export class Artist extends Component {
     }
   }
 }
+
+Artist.propTypes = {
+  fetchArtists: PropTypes.func.isRequired,
+  artists: PropTypes.object.isRequired,
+};
