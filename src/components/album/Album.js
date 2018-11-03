@@ -8,7 +8,6 @@ import {
   Exporter,
   ResourceType
 } from '@/services';
-import {ActionBar} from "../actionBar/ActionBar";
 
 export class Album extends Component {
   constructor(props) {

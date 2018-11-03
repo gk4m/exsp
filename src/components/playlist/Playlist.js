@@ -9,7 +9,6 @@ import {
   Exporter,
   ResourceType
 } from '@/services';
-import {Album} from "../album/Album";
 
 export class Playlist extends Component {
   constructor(props) {

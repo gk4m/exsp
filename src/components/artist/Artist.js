@@ -6,7 +6,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import {CustomTable} from '@/components/customTable';
 
 import {
-  Repository,
   Exporter,
   ResourceType
 } from '@/services';

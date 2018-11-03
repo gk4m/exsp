@@ -3,6 +3,7 @@ export function getParameterByName(name, url) {
     url = window.location.href;
   }
 
+  // eslint-disable-next-line
   const paramName = name.replace(/[\[\]]/g, '\\$&');
 
   const regex = new RegExp('[?&]' + paramName + '(=([^&#]*)|&|#|$)');
