@@ -65,6 +65,10 @@ export class Album extends Component {
       items,
     } = this.state;
 
+    const {
+      actionExport,
+    } = this.props;
+
     const rows = [
       {id: 'image', numeric: false, disablePadding: false, label: 'Cover'},
       {id: 'name', numeric: false, disablePadding: false, label: 'Name'},
@@ -79,6 +83,7 @@ export class Album extends Component {
           headRows={rows}
           items={items}
           handleActionClick={this.handleExportClick}
+          disableAction={actionExport.isLoading}
           renderBody={(item)=> (
            <Fragment>
              <TableCell>
@@ -124,4 +129,5 @@ export class Album extends Component {
 Album.propTypes = {
   fetchAlbums: PropTypes.func.isRequired,
   albums: PropTypes.object.isRequired,
+  actionExport: PropTypes.object.isRequired,
 };

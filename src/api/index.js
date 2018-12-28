@@ -77,4 +77,8 @@ export default {
       ids
     });
   },
+
+  unfollowPlaylist(playlist_id) {
+    return request.delete(`playlists/${playlist_id}/followers`);
+  },
 };

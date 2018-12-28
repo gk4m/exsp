@@ -4,11 +4,7 @@ import TableCell from '@material-ui/core/TableCell';
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {CustomTable} from '@/components/customTable'
-
-import {
-  Exporter,
-  ResourceType
-} from '@/services';
+import {ResourceType} from '@/services';
 
 export class Playlist extends Component {
   constructor(props) {
@@ -21,8 +17,8 @@ export class Playlist extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { playlists } = this.props;
-    const { playlists: prevPlaylist } = prevProps;
+    const {playlists} = this.props;
+    const {playlists: prevPlaylist} = prevProps;
 
     if (!playlists.isLoading && prevPlaylist.isLoading && !playlists.failure) {
       this.setState({
@@ -40,8 +36,9 @@ export class Playlist extends Component {
     fetchPlaylists();
   }
 
-  handleExportClick = (selected) => {
-    Exporter.doExport(selected, ResourceType.PLAYLIST);
+  handleExportClick = async (selected) => {
+    const {doExport} = this.props;
+    doExport(selected, ResourceType.PLAYLIST);
   };
 
   renderLoading = () => {
@@ -52,7 +49,7 @@ export class Playlist extends Component {
 
     return (
       <div style={style}>
-        <CircularProgress color="secondary" />
+        <CircularProgress color="secondary"/>
       </div>
     );
   };
@@ -65,6 +62,10 @@ export class Playlist extends Component {
     const {
       items,
     } = this.state;
+
+    const {
+      actionExport,
+    } = this.props;
 
     const rows = [
       {id: 'image', numeric: false, disablePadding: false, label: 'Cover'},
@@ -80,7 +81,8 @@ export class Playlist extends Component {
           headRows={rows}
           items={items}
           handleActionClick={this.handleExportClick}
-          renderBody={(item)=> (
+          disableAction={actionExport.isLoading}
+          renderBody={(item) => (
             <Fragment>
               <TableCell>
                 {item.images[0] && <Avatar alt="" src={item.images[0].url}/>}
@@ -108,7 +110,7 @@ export class Playlist extends Component {
       return this.renderLoading();
     } else if (items && items.length) {
       return this.renderTable();
-    } else if(e){
+    } else if (e) {
       return this.renderError();
     } else {
       return (<p>There is no playlists.</p>)
@@ -119,4 +121,5 @@ export class Playlist extends Component {
 Playlist.propTypes = {
   fetchPlaylists: PropTypes.func.isRequired,
   playlists: PropTypes.object.isRequired,
+  actionExport: PropTypes.object.isRequired,
 };

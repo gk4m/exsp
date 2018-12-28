@@ -6,7 +6,8 @@ import { Artist } from './Artist';
 
 const mapStateToProps = state => {
   return {
-    artists: state.artist.artists
+    artists: state.artist.artists,
+    actionExport: state.action.export,
   };
 };
 

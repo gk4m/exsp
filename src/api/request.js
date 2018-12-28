@@ -18,7 +18,10 @@ request.interceptors.response.use(null, (error) => {
 
   if (AuthService.getAccessToken() && status === 401) {
     ls.clear();
-    window.location = ''
+
+    setTimeout(()=>{
+      window.location = ''
+    }, 300)
   }
 
   if(status === 503) {

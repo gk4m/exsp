@@ -66,6 +66,10 @@ export class Artist extends Component {
       items,
     } = this.state;
 
+    const {
+      actionExport,
+    } = this.props;
+
     const rows = [
       {id: 'image', numeric: false, disablePadding: false, label: 'Cover'},
       {id: 'name', numeric: false, disablePadding: false, label: 'Name'},
@@ -80,6 +84,7 @@ export class Artist extends Component {
           headRows={rows}
           items={items}
           handleActionClick={this.handleExportClick}
+          disableAction={actionExport.isLoading}
           renderBody={(item)=> (
            <Fragment>
              <TableCell>
@@ -125,4 +130,5 @@ export class Artist extends Component {
 Artist.propTypes = {
   fetchArtists: PropTypes.func.isRequired,
   artists: PropTypes.object.isRequired,
+  actionExport: PropTypes.object.isRequired,
 };

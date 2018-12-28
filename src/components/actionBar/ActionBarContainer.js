@@ -10,7 +10,11 @@ import { ActionBar } from './ActionBar';
 
 const mapStateToProps = state => {
   return {
-    imported: state.action.imported,
+    actionImport: state.action.import,
+    actionExport: state.action.export,
+    albums: state.album.albums,
+    playlists: state.playlist.playlists,
+    artists: state.artist.artists,
   };
 };
 

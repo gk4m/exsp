@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AuthService from '@/services/auth';
+import {ActionProgressContainer} from '@/components/actionProgress';
 import {ActionBarContainer} from '@/components/actionBar';
 import {PlaylistContainer} from '@/components/playlist';
 import {AlbumContainer} from '@/components/album';
@@ -52,18 +53,29 @@ const App = (props) => {
 
       <AppBar position="static" color='primary'>
         <Toolbar>
-          <Typography variant="title" color="inherit" className={classes.flex}>Exsp</Typography>
-          <Button color="inherit" onClick={AuthService.logout}>Logout</Button>
+          <Typography
+            variant="title"
+            color="inherit"
+            className={classes.flex}
+          >
+            Exsp
+          </Typography>
+          <Button
+            color="inherit"
+            onClick={AuthService.logout}
+          >
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
 
       <main className={classes.layout}>
+        <ActionProgressContainer/>
         <ActionBarContainer/>
         <PlaylistContainer/>
         <AlbumContainer/>
         <ArtistContainer/>
       </main>
-
     </div>
   )
 };

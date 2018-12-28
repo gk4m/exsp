@@ -1,3 +1,5 @@
+import {toastr} from 'react-redux-toastr'
+import {waitFor, asyncForEach} from '../utils'
 import api from '../api'
 import auth from './auth'
 
@@ -13,27 +15,28 @@ const importer = {
     return result;
   },
 
-  _importPlaylists(data) {
+  async _importPlaylists(data) {
     const user_id = auth.getUserId();
 
-    data.forEach(async (item) => {
+    await asyncForEach(data, async (item) => {
       const uris = item.tracks.map(el => el.track.uri);
-
       const response = await api.createPlaylist(user_id, item.name);
 
       this._chunk(uris, 100).forEach(async (item) => {
         await api.addTracksToPlaylist(response.data.id, item);
       });
-    })
+
+      await waitFor(500);
+    });
   },
 
-  _importAlbum(data) {
+  async _importAlbum(data) {
     this._chunk(data, 50).forEach(async (item) => {
       await api.saveAlbums(item)
     });
   },
 
-  _importArtists(data) {
+  async _importArtists(data) {
     this._chunk(data, 50).forEach(async (item) => {
       await api.follow('artist', item)
     });
@@ -49,18 +52,20 @@ const importer = {
       } = data;
 
       if (playlists) {
-        return this._importPlaylists(playlists)
+        await this._importPlaylists(playlists)
       }
 
       if (albums) {
-        return this._importAlbum(albums);
+        await this._importAlbum(albums);
       }
 
       if (artists) {
-        return this._importArtists(artists);
+        await this._importArtists(artists);
       }
+
+      toastr.success('Imported!', 'File has been imported correctly.');
     } catch (e) {
-      return Promise.reject('Imported file is incorrect!')
+      toastr.error('Error', 'Imported file is incorrect!. Please try again.');
     }
   },
 };

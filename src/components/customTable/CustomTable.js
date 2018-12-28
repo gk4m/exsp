@@ -1,12 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TablePagination,
+  TableRow,
+  Paper,
+  Checkbox,
+} from '@material-ui/core';
+
 import TableHead from './TableHead';
 import TableToolbar from './TableToolbar';
 
@@ -33,7 +37,7 @@ class CustomTable extends React.Component {
     } = this.props;
 
     if (event.target.checked) {
-      this.setState(state => ({
+      this.setState(() => ({
         selected: items.map(n => n.id)
       }));
       return;
@@ -78,10 +82,11 @@ class CustomTable extends React.Component {
     const {
       classes,
       items,
-      handleActionClick,
       title,
       headRows,
       renderBody,
+      handleActionClick,
+      disableAction,
     } = this.props;
 
     const {
@@ -99,6 +104,7 @@ class CustomTable extends React.Component {
           numSelected={selected.length}
           selected={selected}
           action={handleActionClick}
+          disableAction={disableAction}
           title={title}
         />
 
@@ -166,5 +172,11 @@ class CustomTable extends React.Component {
     );
   }
 }
+
+CustomTable.propTypes = {
+  classes: PropTypes.object.isRequired,
+  disableAction: PropTypes.bool.isRequired,
+  title: PropTypes.string,
+};
 
 export default withStyles(styles)(CustomTable);
