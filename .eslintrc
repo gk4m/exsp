@@ -28,8 +28,15 @@
     "react/jsx-filename-extension": [1, {"extensions": [".js", ".jsx"]}],
     "react/forbid-prop-types": [0],
     "react/no-did-update-set-state": [0],
-    "import/prefer-default-export": [0],
     "jsx-a11y/label-has-for": "off",
-    "import/no-cycle": [2, { "maxDepth": 1 }]
+    "linebreak-style": 0,
+    "import/prefer-default-export": [0],
+    "import/no-cycle": [2, { "maxDepth": 1 }],
+    "import/no-unresolved": [
+      "error",
+      {
+        "ignore": [ "@/" ]
+      }
+    ]
   }
 }

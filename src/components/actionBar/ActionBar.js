@@ -111,14 +111,14 @@ export class ActionBar extends Component {
         >
           Export
         </Button>
-        {/* <Button */}
-        {/* onClick={this.handleRemoveClick} */}
-        {/* variant="contained" */}
-        {/* color="primary" */}
-        {/* component="span" style={{marginLeft: '10px'}} */}
-        {/* > */}
-        {/* remove */}
-        {/* </Button> */}
+         {/*<Button*/}
+         {/*onClick={this.handleRemoveClick}*/}
+         {/*variant="contained"*/}
+         {/*color="primary"*/}
+         {/*component="span" style={{marginLeft: '10px'}}*/}
+         {/*>*/}
+         {/*remove*/}
+         {/*</Button>*/}
       </div>
     );
   }

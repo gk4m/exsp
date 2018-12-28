@@ -94,7 +94,7 @@ const exporter = {
           result = await this._exportAll(selected);
           break;
       }
-
+      toastr.success('Exported!', 'Export has been ran correctly.');
       return result;
     } catch (e) {
       toastr.error('Error', 'Something goes wrong. Please try again.');
