@@ -1,11 +1,10 @@
-import api from '../../api'
-import React, {Component} from 'react';
-import {toastr} from 'react-redux-toastr'
+import React, { Component } from 'react';
+import { toastr } from 'react-redux-toastr';
 import PropTypes from 'prop-types';
-import {Button} from '@material-ui/core'
+import { Button } from '@material-ui/core';
+import api from '../../api';
 
 export class ActionBar extends Component {
-
   async componentDidUpdate(prevProps) {
     const {
       actionImport,
@@ -14,7 +13,7 @@ export class ActionBar extends Component {
       fetchAlbums,
     } = this.props;
 
-    const {actionImport: prevActionImport} = prevProps;
+    const { actionImport: prevActionImport } = prevProps;
 
     if (!actionImport.isLoading && prevActionImport.isLoading && !actionImport.failure) {
       setTimeout(() => {
@@ -26,8 +25,8 @@ export class ActionBar extends Component {
   }
 
   handleImportChange = (event) => {
-    const {doImport} = this.props;
-    const {files} = event.target;
+    const { doImport } = this.props;
+    const { files } = event.target;
     const reader = new FileReader();
 
     reader.readAsText(files[0], 'UTF-8');
@@ -38,7 +37,7 @@ export class ActionBar extends Component {
 
     reader.onerror = () => {
       toastr.error('Error', 'Error on file import!');
-    }
+    };
   };
 
   handleExportClick = () => {
@@ -57,11 +56,11 @@ export class ActionBar extends Component {
       playlists: playlistsIds,
       albums: albumsIds,
       artists: artistsIds,
-    })
+    });
   };
 
   handleRemoveClick = () => {
-    //temporary function for test
+    // temporary function for test
     const {
       playlists,
     } = this.props;
@@ -69,8 +68,8 @@ export class ActionBar extends Component {
     const playlistsIds = playlists.data.items.map(item => item.id);
 
     playlistsIds.forEach(async (item) => {
-      await api.unfollowPlaylist(item)
-    })
+      await api.unfollowPlaylist(item);
+    });
   };
 
   render() {
@@ -97,7 +96,7 @@ export class ActionBar extends Component {
               accept=".json"
               id="import-file"
               type="file"
-              style={{display: 'none'}}
+              style={{ display: 'none' }}
             />
           )}
         </label>
@@ -106,19 +105,20 @@ export class ActionBar extends Component {
           onClick={this.handleExportClick}
           variant="contained"
           color="primary"
-          component="span" style={{marginLeft: '10px'}}
+          component="span"
+          style={{ marginLeft: '10px' }}
           disabled={actionExport.isLoading}
         >
           Export
         </Button>
-        {/*<Button*/}
-          {/*onClick={this.handleRemoveClick}*/}
-          {/*variant="contained"*/}
-          {/*color="primary"*/}
-          {/*component="span" style={{marginLeft: '10px'}}*/}
-        {/*>*/}
-          {/*remove*/}
-        {/*</Button>*/}
+        {/* <Button */}
+        {/* onClick={this.handleRemoveClick} */}
+        {/* variant="contained" */}
+        {/* color="primary" */}
+        {/* component="span" style={{marginLeft: '10px'}} */}
+        {/* > */}
+        {/* remove */}
+        {/* </Button> */}
       </div>
     );
   }
@@ -136,4 +136,3 @@ ActionBar.propTypes = {
   actionImport: PropTypes.object.isRequired,
   actionExport: PropTypes.object.isRequired,
 };
-

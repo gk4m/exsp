@@ -1,12 +1,12 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import TableCell from '@material-ui/core/TableCell';
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {CustomTable} from '@/components/customTable'
+import { CustomTable } from '@/components/customTable';
 import {
   Exporter,
-  ResourceType
+  ResourceType,
 } from '@/services';
 
 export class Album extends Component {
@@ -25,7 +25,7 @@ export class Album extends Component {
 
     if (!albums.isLoading && prevAlbums.isLoading && !albums.failure) {
       this.setState({
-        items:  [...albums.data.items.map(item => item.album)],
+        items: [...albums.data.items.map(item => item.album)],
         loading: false,
       });
     }
@@ -45,8 +45,8 @@ export class Album extends Component {
 
   renderLoading = () => {
     const style = {
-      textAlign: "center",
-      margin: "15px"
+      textAlign: 'center',
+      margin: '15px',
     };
 
     return (
@@ -56,9 +56,7 @@ export class Album extends Component {
     );
   };
 
-  renderError = () => {
-    return <div>I'm sorry! Please try again.</div>;
-  };
+  renderError = () => <div>I'm sorry! Please try again.</div>;
 
   renderTable() {
     const {
@@ -70,10 +68,18 @@ export class Album extends Component {
     } = this.props;
 
     const rows = [
-      {id: 'image', numeric: false, disablePadding: false, label: 'Cover'},
-      {id: 'name', numeric: false, disablePadding: false, label: 'Name'},
-      {id: 'artists', numeric: false, disablePadding: false, label: 'Artists'},
-      {id: 'tracks', numeric: true, disablePadding: false, label: 'Tracks'},
+      {
+        id: 'image', numeric: false, disablePadding: false, label: 'Cover',
+      },
+      {
+        id: 'name', numeric: false, disablePadding: false, label: 'Name',
+      },
+      {
+        id: 'artists', numeric: false, disablePadding: false, label: 'Artists',
+      },
+      {
+        id: 'tracks', numeric: true, disablePadding: false, label: 'Tracks',
+      },
     ];
 
     return (
@@ -84,23 +90,23 @@ export class Album extends Component {
           items={items}
           handleActionClick={this.handleExportClick}
           disableAction={actionExport.isLoading}
-          renderBody={(item)=> (
-           <Fragment>
-             <TableCell>
-               {item.images[0] && <Avatar alt="" src={item.images[0].url}/>}
-             </TableCell>
-             <TableCell>
-               {item.name}
-             </TableCell>
-             <TableCell>
-               {item.artists.map((artist, index) => index > 0
-                 ? `${artist.name}, `
-                 : artist.name)}
-             </TableCell>
-             <TableCell numeric>
-               {item.total_tracks}
-             </TableCell>
-           </Fragment>
+          renderBody={item => (
+            <Fragment>
+              <TableCell>
+                {item.images[0] && <Avatar alt="" src={item.images[0].url} />}
+              </TableCell>
+              <TableCell>
+                {item.name}
+              </TableCell>
+              <TableCell>
+                {item.artists.map((artist, index) => (index > 0
+                  ? `${artist.name}, `
+                  : artist.name))}
+              </TableCell>
+              <TableCell numeric>
+                {item.total_tracks}
+              </TableCell>
+            </Fragment>
           )}
         />
       </Fragment>
@@ -116,13 +122,12 @@ export class Album extends Component {
 
     if (loading) {
       return this.renderLoading();
-    } else if (items && items.length) {
+    } if (items && items.length) {
       return this.renderTable();
-    } else if(e){
+    } if (e) {
       return this.renderError();
-    } else {
-      return (<p>There is no albums.</p>)
     }
+    return (<p>There is no albums.</p>);
   }
 }
 

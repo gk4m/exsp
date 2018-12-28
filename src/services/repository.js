@@ -1,14 +1,14 @@
-import api from '../api'
-import {getParameterByName} from '../utils'
+import api from '../api';
+import { getParameterByName } from '../utils';
 
-const repository  = {
+const repository = {
 
   async _fetch(callback) {
     const pagination = {
       limit: 50,
       offset: 0,
       total: 1,
-      items: []
+      items: [],
     };
 
     try {
@@ -33,33 +33,25 @@ const repository  = {
   },
 
   fetchPlaylistTracks(user_id, playlist_id) {
-    return this._fetch((offset, limit) => {
-      return api.getPlaylistTracks(
-        user_id,
-        playlist_id,
-        offset,
-        limit,
-        'name,offset,total,items(track(id,name,uri))'
-      );
-    })
+    return this._fetch((offset, limit) => api.getPlaylistTracks(
+      user_id,
+      playlist_id,
+      offset,
+      limit,
+      'name,offset,total,items(track(id,name,uri))',
+    ));
   },
 
   fetchPlaylists() {
-    return this._fetch((offset, limit) => {
-      return api.getUserPlaylists(offset, limit);
-    })
+    return this._fetch((offset, limit) => api.getUserPlaylists(offset, limit));
   },
 
   fetchAlbums() {
-    return this._fetch((offset, limit) => {
-      return api.getAlbums(offset, limit);
-    })
+    return this._fetch((offset, limit) => api.getAlbums(offset, limit));
   },
 
   fetchUserSavedTracks() {
-    return this._fetch((offset, limit) => {
-      return api.getTracks(offset, limit);
-    })
+    return this._fetch((offset, limit) => api.getTracks(offset, limit));
   },
 
   async fetchArtists() {
@@ -68,7 +60,7 @@ const repository  = {
       offset: 0,
       total: 1,
       after: null,
-      items: []
+      items: [],
     };
 
     try {
@@ -87,7 +79,7 @@ const repository  = {
         pagination.offset = pagination.items.length;
       }
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
 
     return pagination;

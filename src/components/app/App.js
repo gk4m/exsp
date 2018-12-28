@@ -1,17 +1,17 @@
-import React from 'react'
-import ReduxToastr from 'react-redux-toastr'
+import React from 'react';
+import ReduxToastr from 'react-redux-toastr';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AuthService from '@/services/auth';
-import {ActionProgressContainer} from '@/components/actionProgress';
-import {ActionBarContainer} from '@/components/actionBar';
-import {PlaylistContainer} from '@/components/playlist';
-import {AlbumContainer} from '@/components/album';
-import {ArtistContainer} from '@/components/artist';
+import { ActionProgressContainer } from '@/components/actionProgress';
+import { ActionBarContainer } from '@/components/actionBar';
+import { PlaylistContainer } from '@/components/playlist';
+import { AlbumContainer } from '@/components/album';
+import { ArtistContainer } from '@/components/artist';
 
 const styles = theme => ({
   layout: {
@@ -36,7 +36,7 @@ const styles = theme => ({
 });
 
 const App = (props) => {
-  const {classes} = props;
+  const { classes } = props;
 
   return (
     <div id="app">
@@ -51,7 +51,7 @@ const App = (props) => {
         closeOnToastrClick
       />
 
-      <AppBar position="static" color='primary'>
+      <AppBar position="static" color="primary">
         <Toolbar>
           <Typography
             variant="title"
@@ -70,14 +70,14 @@ const App = (props) => {
       </AppBar>
 
       <main className={classes.layout}>
-        <ActionProgressContainer/>
-        <ActionBarContainer/>
-        <PlaylistContainer/>
-        <AlbumContainer/>
-        <ArtistContainer/>
+        <ActionProgressContainer />
+        <ActionBarContainer />
+        <PlaylistContainer />
+        <AlbumContainer />
+        <ArtistContainer />
       </main>
     </div>
-  )
+  );
 };
 
 App.propTypes = {

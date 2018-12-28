@@ -1,12 +1,12 @@
-import {toastr} from 'react-redux-toastr'
-import {waitFor, asyncForEach} from '../utils'
-import api from '../api'
-import auth from './auth'
+import { toastr } from 'react-redux-toastr';
+import { waitFor, asyncForEach } from '../utils';
+import api from '../api';
+import auth from './auth';
 
 const importer = {
 
   _chunk(arr, chunkSize) {
-    let result = [];
+    const result = [];
 
     for (let i = 0, len = arr.length; i < len; i += chunkSize) {
       result.push(arr.slice(i, i + chunkSize));
@@ -32,13 +32,13 @@ const importer = {
 
   async _importAlbum(data) {
     this._chunk(data, 50).forEach(async (item) => {
-      await api.saveAlbums(item)
+      await api.saveAlbums(item);
     });
   },
 
   async _importArtists(data) {
     this._chunk(data, 50).forEach(async (item) => {
-      await api.follow('artist', item)
+      await api.follow('artist', item);
     });
   },
 
@@ -52,7 +52,7 @@ const importer = {
       } = data;
 
       if (playlists) {
-        await this._importPlaylists(playlists)
+        await this._importPlaylists(playlists);
       }
 
       if (albums) {

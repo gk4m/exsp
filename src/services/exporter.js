@@ -1,7 +1,7 @@
-import {saveAs} from 'file-saver/FileSaver';
-import {toastr} from 'react-redux-toastr'
-import {ResourceType} from './types/ResourceType'
-import Repository from './repository'
+import { saveAs } from 'file-saver/FileSaver';
+import { toastr } from 'react-redux-toastr';
+import { ResourceType } from './types/ResourceType';
+import Repository from './repository';
 
 const exporter = {
 
@@ -9,7 +9,7 @@ const exporter = {
     const file = new File(
       [JSON.stringify(data)],
       `${name}-${new Date().toLocaleDateString()}.json`,
-      {type: "application/json;charset=utf-8"}
+      { type: 'application/json;charset=utf-8' },
     );
 
     return saveAs(file);
@@ -39,7 +39,7 @@ const exporter = {
   },
 
   async _exportPlaylists(selectedPlaylist) {
-    const {items: playlists} = await Repository.fetchPlaylists();
+    const { items: playlists } = await Repository.fetchPlaylists();
 
     const toExport = {
       playlists: await this._getPlaylistsWithDetails(playlists, selectedPlaylist),
@@ -65,7 +65,7 @@ const exporter = {
   },
 
   async _exportAll(selected) {
-    const {items: playlists} = await Repository.fetchPlaylists();
+    const { items: playlists } = await Repository.fetchPlaylists();
 
     const toExport = {
       ...selected,
@@ -98,7 +98,7 @@ const exporter = {
     } catch (e) {
       toastr.error('Error', 'Something goes wrong. Please try again.');
     }
-  }
+  },
 };
 
 export default exporter;

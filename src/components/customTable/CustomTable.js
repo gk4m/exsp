@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import {
   Table,
   TableBody,
@@ -31,22 +31,22 @@ class CustomTable extends React.Component {
     rowsPerPage: 5,
   };
 
-  handleSelectAllClick = event => {
+  handleSelectAllClick = (event) => {
     const {
       items,
     } = this.props;
 
     if (event.target.checked) {
       this.setState(() => ({
-        selected: items.map(n => n.id)
+        selected: items.map(n => n.id),
       }));
       return;
     }
-    this.setState({selected: []});
+    this.setState({ selected: [] });
   };
 
   handleClick = (event, id) => {
-    const {selected} = this.state;
+    const { selected } = this.state;
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
@@ -63,16 +63,16 @@ class CustomTable extends React.Component {
       );
     }
 
-    this.setState({selected: newSelected});
+    this.setState({ selected: newSelected });
   };
 
   handleChangePage = (event, page) => {
-    this.setState({page});
+    this.setState({ page });
   };
 
-  handleChangeRowsPerPage = event => {
+  handleChangeRowsPerPage = (event) => {
     this.setState({
-      rowsPerPage: event.target.value
+      rowsPerPage: event.target.value,
     });
   };
 
@@ -121,7 +121,7 @@ class CustomTable extends React.Component {
             <TableBody>
               {items
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(item => {
+                .map((item) => {
                   const isSelected = this.isSelected(item.id);
 
                   return (
@@ -135,7 +135,7 @@ class CustomTable extends React.Component {
                       selected={isSelected}
                     >
                       <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected}/>
+                        <Checkbox checked={isSelected} />
                       </TableCell>
                       {renderBody && (
                         renderBody(item)
@@ -145,8 +145,8 @@ class CustomTable extends React.Component {
                 })}
 
               {emptyRows > 0 && (
-                <TableRow style={{height: 49 * emptyRows}}>
-                  <TableCell colSpan={6}/>
+                <TableRow style={{ height: 49 * emptyRows }}>
+                  <TableCell colSpan={6} />
                 </TableRow>
               )}
 

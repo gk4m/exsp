@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
-import {lighten} from '@material-ui/core/styles/colorManipulator';
+import { withStyles } from '@material-ui/core/styles';
+import { lighten } from '@material-ui/core/styles/colorManipulator';
 import {
   Toolbar,
   Typography,
@@ -36,7 +36,6 @@ const styles = theme => ({
 });
 
 class TableToolbar extends React.Component {
-
   render() {
     const {
       title,
@@ -57,7 +56,9 @@ class TableToolbar extends React.Component {
         <div className={classes.title}>
           {numSelected > 0 ? (
             <Typography color="inherit" variant="subheading">
-              {numSelected} selected
+              {numSelected}
+              {' '}
+selected
             </Typography>
           ) : (
             <Typography variant="title" id="tableTitle">
@@ -65,7 +66,7 @@ class TableToolbar extends React.Component {
             </Typography>
           )}
         </div>
-        <div className={classes.spacer}/>
+        <div className={classes.spacer} />
         <div className={classes.actions}>
           <Tooltip title="Export">
             <div>
