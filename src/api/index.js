@@ -1,12 +1,13 @@
-import request from './request'
+/* eslint-disable camelcase */
+import request from '@/api/request';
 
 export default {
   getUserPlaylists(offset, limit) {
     return request.get('me/playlists', {
       params: {
         offset,
-        limit
-      }
+        limit,
+      },
     });
   },
 
@@ -15,13 +16,13 @@ export default {
       params: {
         fields,
         limit,
-        offset
-      }
+        offset,
+      },
     });
   },
 
   getUserProfile(userID) {
-    return userID ? request.get(`users/${userID}`) : request.get('me')
+    return userID ? request.get(`users/${userID}`) : request.get('me');
   },
 
   getTracks(offset, limit, market) {
@@ -29,8 +30,8 @@ export default {
       params: {
         limit,
         offset,
-        market
-      }
+        market,
+      },
     });
   },
 
@@ -39,24 +40,24 @@ export default {
       params: {
         limit,
         offset,
-        market
-      }
+        market,
+      },
     });
   },
 
   getFollowedArtists(limit, after) {
-    return request.get(`me/following?type=artist`, {
+    return request.get('me/following?type=artist', {
       params: {
         limit,
-        after
-      }
+        after,
+      },
     });
   },
 
   createPlaylist(user_id, name, description) {
     return request.post(`users/${user_id}/playlists`, {
       name,
-      description
+      description,
     });
   },
 
@@ -68,13 +69,13 @@ export default {
 
   saveAlbums(ids) {
     return request.put('me/albums', {
-      ids
+      ids,
     });
   },
 
   follow(type, ids) {
     return request.put(`me/following?type=${type}`, {
-      ids
+      ids,
     });
   },
 

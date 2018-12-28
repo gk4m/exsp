@@ -1,13 +1,13 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import TableCell from '@material-ui/core/TableCell';
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {CustomTable} from '@/components/customTable';
+import { CustomTable } from '@/components/customTable';
 
 import {
   Exporter,
-  ResourceType
+  ResourceType,
 } from '@/services';
 
 export class Artist extends Component {
@@ -18,6 +18,14 @@ export class Artist extends Component {
       items: [],
       loading: true,
     };
+  }
+
+  async componentWillMount() {
+    const {
+      fetchArtists,
+    } = this.props;
+
+    fetchArtists();
   }
 
   componentDidUpdate(prevProps) {
@@ -32,22 +40,14 @@ export class Artist extends Component {
     }
   }
 
-  async componentWillMount() {
-    const {
-      fetchArtists,
-    } = this.props;
-
-    fetchArtists();
-  }
-
   handleExportClick = (selected) => {
     Exporter.doExport(selected, ResourceType.ARTIST);
   };
 
   renderLoading = () => {
     const style = {
-      textAlign: "center",
-      margin: "15px"
+      textAlign: 'center',
+      margin: '15px',
     };
 
     return (
@@ -57,9 +57,11 @@ export class Artist extends Component {
     );
   };
 
-  renderError = () => {
-    return <div>I'm sorry! Please try again.</div>;
-  };
+  renderError = () => (
+    <div>
+      {'I\'m sorry! Please try again.'}
+    </div>
+  );
 
   renderTable() {
     const {
@@ -71,10 +73,18 @@ export class Artist extends Component {
     } = this.props;
 
     const rows = [
-      {id: 'image', numeric: false, disablePadding: false, label: 'Cover'},
-      {id: 'name', numeric: false, disablePadding: false, label: 'Name'},
-      {id: 'genres', numeric: false, disablePadding: false, label: 'Genres'},
-      {id: 'followers', numeric: true, disablePadding: false, label: 'Followers'},
+      {
+        id: 'image', numeric: false, disablePadding: false, label: 'Cover',
+      },
+      {
+        id: 'name', numeric: false, disablePadding: false, label: 'Name',
+      },
+      {
+        id: 'genres', numeric: false, disablePadding: false, label: 'Genres',
+      },
+      {
+        id: 'followers', numeric: true, disablePadding: false, label: 'Followers',
+      },
     ];
 
     return (
@@ -85,23 +95,23 @@ export class Artist extends Component {
           items={items}
           handleActionClick={this.handleExportClick}
           disableAction={actionExport.isLoading}
-          renderBody={(item)=> (
-           <Fragment>
-             <TableCell>
-               {item.images[0] && <Avatar alt="" src={item.images[0].url}/>}
-             </TableCell>
-             <TableCell>
-               {item.name}
-             </TableCell>
-             <TableCell>
-               {item.genres.map((genre, index) => index > 0
-                 ? `${genre}, `
-                 : genre)}
-             </TableCell>
-             <TableCell numeric>
-               {item.followers.total}
-             </TableCell>
-           </Fragment>
+          renderBody={item => (
+            <Fragment>
+              <TableCell>
+                {item.images[0] && <Avatar alt="" src={item.images[0].url} />}
+              </TableCell>
+              <TableCell>
+                {item.name}
+              </TableCell>
+              <TableCell>
+                {item.genres.map((genre, index) => (index > 0
+                  ? `${genre}, `
+                  : genre))}
+              </TableCell>
+              <TableCell numeric>
+                {item.followers.total}
+              </TableCell>
+            </Fragment>
           )}
         />
       </Fragment>
@@ -117,13 +127,12 @@ export class Artist extends Component {
 
     if (loading) {
       return this.renderLoading();
-    } else if (items && items.length) {
+    } if (items && items.length) {
       return this.renderTable();
-    } else if(e){
+    } if (e) {
       return this.renderError();
-    } else {
-      return (<p>There is no artists.</p>)
     }
+    return (<p>There is no artists.</p>);
   }
 }
 

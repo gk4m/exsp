@@ -1,12 +1,12 @@
-import {toastr} from 'react-redux-toastr'
-import {waitFor, asyncForEach} from '../utils'
-import api from '../api'
-import auth from './auth'
+import { toastr } from 'react-redux-toastr';
+import { waitFor, asyncForEach } from '../utils';
+import api from '../api';
+import auth from './auth';
 
 const importer = {
 
   _chunk(arr, chunkSize) {
-    let result = [];
+    const result = [];
 
     for (let i = 0, len = arr.length; i < len; i += chunkSize) {
       result.push(arr.slice(i, i + chunkSize));
@@ -16,11 +16,11 @@ const importer = {
   },
 
   async _importPlaylists(data) {
-    const user_id = auth.getUserId();
+    const userId = auth.getUserId();
 
-    await asyncForEach(data, async (item) => {
-      const uris = item.tracks.map(el => el.track.uri);
-      const response = await api.createPlaylist(user_id, item.name);
+    await asyncForEach(data, async (playlist) => {
+      const uris = playlist.tracks.map(el => el.track.uri);
+      const response = await api.createPlaylist(userId, playlist.name);
 
       this._chunk(uris, 100).forEach(async (item) => {
         await api.addTracksToPlaylist(response.data.id, item);
@@ -32,13 +32,13 @@ const importer = {
 
   async _importAlbum(data) {
     this._chunk(data, 50).forEach(async (item) => {
-      await api.saveAlbums(item)
+      await api.saveAlbums(item);
     });
   },
 
   async _importArtists(data) {
     this._chunk(data, 50).forEach(async (item) => {
-      await api.follow('artist', item)
+      await api.follow('artist', item);
     });
   },
 
@@ -52,7 +52,7 @@ const importer = {
       } = data;
 
       if (playlists) {
-        await this._importPlaylists(playlists)
+        await this._importPlaylists(playlists);
       }
 
       if (albums) {

@@ -1,10 +1,10 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import TableCell from '@material-ui/core/TableCell';
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {CustomTable} from '@/components/customTable'
-import {ResourceType} from '@/services';
+import { CustomTable } from '@/components/customTable';
+import { ResourceType } from '@/services';
 
 export class Playlist extends Component {
   constructor(props) {
@@ -16,9 +16,17 @@ export class Playlist extends Component {
     };
   }
 
+  componentWillMount() {
+    const {
+      fetchPlaylists,
+    } = this.props;
+
+    fetchPlaylists();
+  }
+
   componentDidUpdate(prevProps) {
-    const {playlists} = this.props;
-    const {playlists: prevPlaylist} = prevProps;
+    const { playlists } = this.props;
+    const { playlists: prevPlaylist } = prevProps;
 
     if (!playlists.isLoading && prevPlaylist.isLoading && !playlists.failure) {
       this.setState({
@@ -28,35 +36,29 @@ export class Playlist extends Component {
     }
   }
 
-  componentWillMount() {
-    const {
-      fetchPlaylists,
-    } = this.props;
-
-    fetchPlaylists();
-  }
-
   handleExportClick = async (selected) => {
-    const {doExport} = this.props;
+    const { doExport } = this.props;
     doExport(selected, ResourceType.PLAYLIST);
   };
 
   renderLoading = () => {
     const style = {
-      textAlign: "center",
-      margin: "15px"
+      textAlign: 'center',
+      margin: '15px',
     };
 
     return (
       <div style={style}>
-        <CircularProgress color="secondary"/>
+        <CircularProgress color="secondary" />
       </div>
     );
   };
 
-  renderError = () => {
-    return <div>I'm sorry! Please try again.</div>;
-  };
+  renderError = () => (
+    <div>
+      {'I\'m sorry! Please try again.'}
+    </div>
+  );
 
   renderTable() {
     const {
@@ -68,10 +70,18 @@ export class Playlist extends Component {
     } = this.props;
 
     const rows = [
-      {id: 'image', numeric: false, disablePadding: false, label: 'Cover'},
-      {id: 'name', numeric: false, disablePadding: false, label: 'Name'},
-      {id: 'owner', numeric: false, disablePadding: false, label: 'Owner'},
-      {id: 'tracks', numeric: true, disablePadding: false, label: 'Tracks'},
+      {
+        id: 'image', numeric: false, disablePadding: false, label: 'Cover',
+      },
+      {
+        id: 'name', numeric: false, disablePadding: false, label: 'Name',
+      },
+      {
+        id: 'owner', numeric: false, disablePadding: false, label: 'Owner',
+      },
+      {
+        id: 'tracks', numeric: true, disablePadding: false, label: 'Tracks',
+      },
     ];
 
     return (
@@ -82,10 +92,10 @@ export class Playlist extends Component {
           items={items}
           handleActionClick={this.handleExportClick}
           disableAction={actionExport.isLoading}
-          renderBody={(item) => (
+          renderBody={item => (
             <Fragment>
               <TableCell>
-                {item.images[0] && <Avatar alt="" src={item.images[0].url}/>}
+                {item.images[0] && <Avatar alt="" src={item.images[0].url} />}
               </TableCell>
               <TableCell>
                 {item.name}
@@ -108,13 +118,12 @@ export class Playlist extends Component {
 
     if (loading) {
       return this.renderLoading();
-    } else if (items && items.length) {
+    } if (items && items.length) {
       return this.renderTable();
-    } else if (e) {
+    } if (e) {
       return this.renderError();
-    } else {
-      return (<p>There is no playlists.</p>)
     }
+    return (<p>There is no playlists.</p>);
   }
 }
 

@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
+import {
+  TableCell,
+  TableHead,
+  TableRow,
+  Checkbox,
+} from '@material-ui/core';
 
-class PlaylistTableHead extends React.Component {
+class PlaylistTableHead extends PureComponent {
   render() {
     const {
       onSelectAllClick,
@@ -25,17 +27,15 @@ class PlaylistTableHead extends React.Component {
             />
           </TableCell>
 
-          {rows.map(row => {
-            return (
-              <TableCell
-                key={row.id}
-                numeric={row.numeric}
-                padding={row.disablePadding ? 'none' : 'default'}
-              >
-                {row.label}
-              </TableCell>
-            );
-          }, this)}
+          {rows.map(row => (
+            <TableCell
+              key={row.id}
+              numeric={row.numeric}
+              padding={row.disablePadding ? 'none' : 'default'}
+            >
+              {row.label}
+            </TableCell>
+          ), this)}
 
         </TableRow>
       </TableHead>
@@ -44,10 +44,10 @@ class PlaylistTableHead extends React.Component {
 }
 
 PlaylistTableHead.propTypes = {
+  rows: PropTypes.array.isRequired,
+  rowCount: PropTypes.number.isRequired,
   numSelected: PropTypes.number.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
-  rowCount: PropTypes.number.isRequired,
-  rows: PropTypes.array.isRequired
 };
 
 export default PlaylistTableHead;

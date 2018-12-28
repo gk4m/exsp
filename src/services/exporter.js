@@ -1,7 +1,7 @@
-import {saveAs} from 'file-saver/FileSaver';
-import {toastr} from 'react-redux-toastr'
-import {ResourceType} from './types/ResourceType'
-import Repository from './repository'
+import { saveAs } from 'file-saver/FileSaver';
+import { toastr } from 'react-redux-toastr';
+import { ResourceType } from './types/ResourceType';
+import Repository from './repository';
 
 const exporter = {
 
@@ -9,7 +9,7 @@ const exporter = {
     const file = new File(
       [JSON.stringify(data)],
       `${name}-${new Date().toLocaleDateString()}.json`,
-      {type: "application/json;charset=utf-8"}
+      { type: 'application/json;charset=utf-8' },
     );
 
     return saveAs(file);
@@ -30,6 +30,7 @@ const exporter = {
 
     for (let i = 0, len = playlists.length; i < len; i++) {
       if (selectedPlaylist.indexOf(playlists[i].id) > -1) {
+        /* eslint-disable-next-line no-await-in-loop */
         const obj = await this._getPlaylistObject(playlists[i]);
         result.push(obj);
       }
@@ -39,13 +40,13 @@ const exporter = {
   },
 
   async _exportPlaylists(selectedPlaylist) {
-    const {items: playlists} = await Repository.fetchPlaylists();
+    const { items: playlists } = await Repository.fetchPlaylists();
 
     const toExport = {
       playlists: await this._getPlaylistsWithDetails(playlists, selectedPlaylist),
     };
 
-    return await exporter._saveAs(toExport, 'playlists-backup');
+    await exporter._saveAs(toExport, 'playlists-backup');
   },
 
   async _exportAlbums(selected) {
@@ -53,7 +54,7 @@ const exporter = {
 
     toExport.albums = selected;
 
-    return await exporter._saveAs(toExport, 'albums-backup');
+    await exporter._saveAs(toExport, 'albums-backup');
   },
 
   async _exportArtists(selected) {
@@ -61,24 +62,24 @@ const exporter = {
 
     toExport.artists = selected;
 
-    return await exporter._saveAs(toExport, 'artists-backup');
+    await exporter._saveAs(toExport, 'artists-backup');
   },
 
   async _exportAll(selected) {
-    const {items: playlists} = await Repository.fetchPlaylists();
+    const { items: playlists } = await Repository.fetchPlaylists();
 
     const toExport = {
       ...selected,
       playlists: await this._getPlaylistsWithDetails(playlists, selected.playlists),
     };
 
-    return await exporter._saveAs(toExport, 'spotify-backup');
+    await exporter._saveAs(toExport, 'spotify-backup');
   },
 
   async doExport(selected, type) {
-    try {
-      let result = null;
+    let result = null;
 
+    try {
       switch (type) {
         case ResourceType.PLAYLIST:
           result = await this._exportPlaylists(selected);
@@ -98,7 +99,9 @@ const exporter = {
     } catch (e) {
       toastr.error('Error', 'Something goes wrong. Please try again.');
     }
-  }
+
+    return result;
+  },
 };
 
 export default exporter;
