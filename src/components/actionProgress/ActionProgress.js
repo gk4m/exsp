@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-export class ActionProgress extends Component {
+export class ActionProgress extends PureComponent {
   render() {
     const {
       actionExport,

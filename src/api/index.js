@@ -1,4 +1,5 @@
-import request from './request';
+/* eslint-disable camelcase */
+import request from '@/api/request';
 
 export default {
   getUserPlaylists(offset, limit) {

@@ -13,6 +13,7 @@ const repository = {
 
     try {
       while (pagination.total > pagination.offset) {
+        /* eslint-disable-next-line no-await-in-loop */
         const response = await callback(pagination.offset, pagination.limit);
 
         const {
@@ -32,10 +33,10 @@ const repository = {
     return pagination;
   },
 
-  fetchPlaylistTracks(user_id, playlist_id) {
+  fetchPlaylistTracks(userId, playlistId) {
     return this._fetch((offset, limit) => api.getPlaylistTracks(
-      user_id,
-      playlist_id,
+      userId,
+      playlistId,
       offset,
       limit,
       'name,offset,total,items(track(id,name,uri))',
@@ -65,6 +66,7 @@ const repository = {
 
     try {
       while (pagination.total > pagination.offset) {
+        /* eslint-disable-next-line no-await-in-loop */
         const response = await api.getFollowedArtists(pagination.limit, pagination.after);
 
         const {

@@ -30,6 +30,7 @@ const exporter = {
 
     for (let i = 0, len = playlists.length; i < len; i++) {
       if (selectedPlaylist.indexOf(playlists[i].id) > -1) {
+        /* eslint-disable-next-line no-await-in-loop */
         const obj = await this._getPlaylistObject(playlists[i]);
         result.push(obj);
       }
@@ -45,7 +46,7 @@ const exporter = {
       playlists: await this._getPlaylistsWithDetails(playlists, selectedPlaylist),
     };
 
-    return await exporter._saveAs(toExport, 'playlists-backup');
+    await exporter._saveAs(toExport, 'playlists-backup');
   },
 
   async _exportAlbums(selected) {
@@ -53,7 +54,7 @@ const exporter = {
 
     toExport.albums = selected;
 
-    return await exporter._saveAs(toExport, 'albums-backup');
+    await exporter._saveAs(toExport, 'albums-backup');
   },
 
   async _exportArtists(selected) {
@@ -61,7 +62,7 @@ const exporter = {
 
     toExport.artists = selected;
 
-    return await exporter._saveAs(toExport, 'artists-backup');
+    await exporter._saveAs(toExport, 'artists-backup');
   },
 
   async _exportAll(selected) {
@@ -72,13 +73,13 @@ const exporter = {
       playlists: await this._getPlaylistsWithDetails(playlists, selected.playlists),
     };
 
-    return await exporter._saveAs(toExport, 'spotify-backup');
+    await exporter._saveAs(toExport, 'spotify-backup');
   },
 
   async doExport(selected, type) {
-    try {
-      let result = null;
+    let result = null;
 
+    try {
       switch (type) {
         case ResourceType.PLAYLIST:
           result = await this._exportPlaylists(selected);
@@ -98,6 +99,8 @@ const exporter = {
     } catch (e) {
       toastr.error('Error', 'Something goes wrong. Please try again.');
     }
+
+    return result;
   },
 };
 

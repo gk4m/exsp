@@ -20,6 +20,14 @@ export class Artist extends Component {
     };
   }
 
+  async componentWillMount() {
+    const {
+      fetchArtists,
+    } = this.props;
+
+    fetchArtists();
+  }
+
   componentDidUpdate(prevProps) {
     const { artists } = this.props;
     const { artists: prevArtists } = prevProps;
@@ -30,14 +38,6 @@ export class Artist extends Component {
         loading: false,
       });
     }
-  }
-
-  async componentWillMount() {
-    const {
-      fetchArtists,
-    } = this.props;
-
-    fetchArtists();
   }
 
   handleExportClick = (selected) => {
@@ -57,7 +57,11 @@ export class Artist extends Component {
     );
   };
 
-  renderError = () => <div>I'm sorry! Please try again.</div>;
+  renderError = () => (
+    <div>
+      {'I\'m sorry! Please try again.'}
+    </div>
+  );
 
   renderTable() {
     const {

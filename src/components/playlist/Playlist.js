@@ -16,6 +16,14 @@ export class Playlist extends Component {
     };
   }
 
+  componentWillMount() {
+    const {
+      fetchPlaylists,
+    } = this.props;
+
+    fetchPlaylists();
+  }
+
   componentDidUpdate(prevProps) {
     const { playlists } = this.props;
     const { playlists: prevPlaylist } = prevProps;
@@ -26,14 +34,6 @@ export class Playlist extends Component {
         loading: false,
       });
     }
-  }
-
-  componentWillMount() {
-    const {
-      fetchPlaylists,
-    } = this.props;
-
-    fetchPlaylists();
   }
 
   handleExportClick = async (selected) => {
@@ -54,7 +54,11 @@ export class Playlist extends Component {
     );
   };
 
-  renderError = () => <div>I'm sorry! Please try again.</div>;
+  renderError = () => (
+    <div>
+      {'I\'m sorry! Please try again.'}
+    </div>
+  );
 
   renderTable() {
     const {

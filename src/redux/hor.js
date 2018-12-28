@@ -45,7 +45,7 @@ export function createReducer(actionPath) {
         [PROPS.DATA]: action.payload,
       };
     },
-    [ACTIONS.END](state) {
+    [ACTIONS.END]() {
       return INITIAL_STATE;
     },
   }, INITIAL_STATE);

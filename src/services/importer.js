@@ -16,11 +16,11 @@ const importer = {
   },
 
   async _importPlaylists(data) {
-    const user_id = auth.getUserId();
+    const userId = auth.getUserId();
 
-    await asyncForEach(data, async (item) => {
-      const uris = item.tracks.map(el => el.track.uri);
-      const response = await api.createPlaylist(user_id, item.name);
+    await asyncForEach(data, async (playlist) => {
+      const uris = playlist.tracks.map(el => el.track.uri);
+      const response = await api.createPlaylist(userId, playlist.name);
 
       this._chunk(uris, 100).forEach(async (item) => {
         await api.addTracksToPlaylist(response.data.id, item);

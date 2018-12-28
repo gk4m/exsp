@@ -73,8 +73,8 @@ export default {
     const key = {};
 
     for (let i = 0; i < vars.length; i++) {
-      const tmp = vars[i].split('=');
-      key[tmp[0]] = tmp[1];
+      const [tokenKey, tokenValue] = vars[i].split('=');
+      key[tokenKey] = tokenValue;
     }
 
     if (key.access_token && key.expires_in) {

@@ -7,10 +7,13 @@ const request = axios.create({
 });
 
 request.interceptors.request.use((config) => {
+  const newConfig = { ...config };
+
   if (AuthService.getAccessToken()) {
-    config.headers.common.Authorization = `Bearer ${AuthService.getAccessToken()}`;
+    newConfig.headers.common.Authorization = `Bearer ${AuthService.getAccessToken()}`;
   }
-  return config;
+
+  return newConfig;
 }, null);
 
 request.interceptors.response.use(null, (error) => {
@@ -27,6 +30,8 @@ request.interceptors.response.use(null, (error) => {
   if (status === 503) {
     return axios(config);
   }
+
+  return error.response;
 });
 
 export default request;

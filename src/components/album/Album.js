@@ -19,6 +19,14 @@ export class Album extends Component {
     };
   }
 
+  componentWillMount() {
+    const {
+      fetchAlbums,
+    } = this.props;
+
+    fetchAlbums();
+  }
+
   componentDidUpdate(prevProps) {
     const { albums } = this.props;
     const { albums: prevAlbums } = prevProps;
@@ -29,14 +37,6 @@ export class Album extends Component {
         loading: false,
       });
     }
-  }
-
-  async componentWillMount() {
-    const {
-      fetchAlbums,
-    } = this.props;
-
-    fetchAlbums();
   }
 
   handleExportClick = (selected) => {
@@ -56,7 +56,11 @@ export class Album extends Component {
     );
   };
 
-  renderError = () => <div>I'm sorry! Please try again.</div>;
+  renderError = () => (
+    <div>
+      {'I\'m sorry! Please try again.'}
+    </div>
+  );
 
   renderTable() {
     const {

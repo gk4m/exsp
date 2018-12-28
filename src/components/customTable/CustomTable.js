@@ -76,7 +76,10 @@ class CustomTable extends React.Component {
     });
   };
 
-  isSelected = id => this.state.selected.indexOf(id) !== -1;
+  isSelected = (id) => {
+    const { selected } = this.state;
+    return selected.indexOf(id) !== -1;
+  };
 
   render() {
     const {
@@ -173,10 +176,18 @@ class CustomTable extends React.Component {
   }
 }
 
+CustomTable.defaultProps = {
+  title: '',
+};
+
 CustomTable.propTypes = {
-  classes: PropTypes.object.isRequired,
-  disableAction: PropTypes.bool.isRequired,
   title: PropTypes.string,
+  items: PropTypes.array.isRequired,
+  headRows: PropTypes.array.isRequired,
+  classes: PropTypes.object.isRequired,
+  renderBody: PropTypes.func.isRequired,
+  disableAction: PropTypes.bool.isRequired,
+  handleActionClick: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(CustomTable);

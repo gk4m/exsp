@@ -1,6 +1,6 @@
-import React from 'react';
-import classNames from 'classnames';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import {
@@ -35,7 +35,7 @@ const styles = theme => ({
   },
 });
 
-class TableToolbar extends React.Component {
+class TableToolbar extends PureComponent {
   render() {
     const {
       title,
@@ -47,6 +47,7 @@ class TableToolbar extends React.Component {
     } = this.props;
 
     const isActionDisabled = disableAction || !(numSelected > 0);
+
     return (
       <Toolbar
         className={classNames(classes.root, {
@@ -87,11 +88,17 @@ selected
   }
 }
 
+TableToolbar.defaultProps = {
+  title: '',
+};
+
 TableToolbar.propTypes = {
+  title: PropTypes.string,
+  action: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
+  selected: PropTypes.array.isRequired,
   numSelected: PropTypes.number.isRequired,
   disableAction: PropTypes.bool.isRequired,
-  title: PropTypes.string,
 };
 
 export default withStyles(styles)(TableToolbar);
