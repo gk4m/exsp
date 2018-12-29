@@ -134,7 +134,7 @@ export class Artist extends Component {
       } if (e) {
         return this.renderError();
       }
-      return (<p>There is no artists.</p>);
+      return (<p className="text-align-center">There is no artists.</p>);
     }
 
     return null;

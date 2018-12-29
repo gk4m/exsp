@@ -133,7 +133,7 @@ export class Album extends Component {
       } if (e) {
         return this.renderError();
       }
-      return (<p>There is no albums.</p>);
+      return (<p className="text-align-center">There is no albums.</p>);
     }
 
     return null;

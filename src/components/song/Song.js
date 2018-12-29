@@ -133,7 +133,7 @@ export class Song extends Component {
       } if (e) {
         return this.renderError();
       }
-      return (<p>There is no songs.</p>);
+      return (<p className="text-align-center">There is no songs.</p>);
     }
 
     return null;

@@ -125,7 +125,7 @@ export class Playlist extends Component {
       } if (e) {
         return this.renderError();
       }
-      return (<p>There is no playlists.</p>);
+      return (<p className="text-align-center">There is no playlists.</p>);
     }
 
     return null;
