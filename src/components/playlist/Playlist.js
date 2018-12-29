@@ -116,19 +116,30 @@ export class Playlist extends Component {
       e,
     } = this.state;
 
-    if (loading) {
-      return this.renderLoading();
-    } if (items && items.length) {
-      return this.renderTable();
-    } if (e) {
-      return this.renderError();
+    const { isVisible } = this.props;
+
+    if (isVisible) {
+      if (loading) {
+        return this.renderLoading();
+      } if (items && items.length) {
+        return this.renderTable();
+      } if (e) {
+        return this.renderError();
+      }
+      return (<p>There is no playlists.</p>);
     }
-    return (<p>There is no playlists.</p>);
+
+    return null;
   }
 }
 
+Playlist.defaultProps = {
+  isVisible: false,
+};
+
 Playlist.propTypes = {
-  fetchPlaylists: PropTypes.func.isRequired,
+  isVisible: PropTypes.bool,
   playlists: PropTypes.object.isRequired,
+  fetchPlaylists: PropTypes.func.isRequired,
   actionExport: PropTypes.object.isRequired,
 };

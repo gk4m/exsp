@@ -125,19 +125,30 @@ export class Artist extends Component {
       e,
     } = this.state;
 
-    if (loading) {
-      return this.renderLoading();
-    } if (items && items.length) {
-      return this.renderTable();
-    } if (e) {
-      return this.renderError();
+    const { isVisible } = this.props;
+
+    if (isVisible) {
+      if (loading) {
+        return this.renderLoading();
+      } if (items && items.length) {
+        return this.renderTable();
+      } if (e) {
+        return this.renderError();
+      }
+      return (<p>There is no artists.</p>);
     }
-    return (<p>There is no artists.</p>);
+
+    return null;
   }
 }
 
+Artist.defaultProps = {
+  isVisible: false,
+};
+
 Artist.propTypes = {
-  fetchArtists: PropTypes.func.isRequired,
   artists: PropTypes.object.isRequired,
+  isVisible: PropTypes.bool,
+  fetchArtists: PropTypes.func.isRequired,
   actionExport: PropTypes.object.isRequired,
 };

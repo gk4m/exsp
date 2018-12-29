@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReduxToastr from 'react-redux-toastr';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import {
+  AppBar,
+  Button,
+  Toolbar,
+  Typography,
+  Tab,
+  Tabs,
+  withStyles,
+} from '@material-ui/core';
+
 import AuthService from '@/services/auth';
 import { ActionProgressContainer } from '@/components/actionProgress';
 import { ActionBarContainer } from '@/components/actionBar';
@@ -35,50 +40,73 @@ const styles = theme => ({
   },
 });
 
-const App = (props) => {
-  const { classes } = props;
+class App extends Component {
+  state = {
+    activeTab: 0,
+  };
 
-  return (
-    <div id="app">
-      <ReduxToastr
-        timeOut={4000}
-        newestOnTop={false}
-        preventDuplicates
-        position="bottom-left"
-        transitionIn="fadeIn"
-        transitionOut="fadeOut"
-        progressBar
-        closeOnToastrClick
-      />
+  handleTabChange = (event, value) => {
+    this.setState({ activeTab: value });
+  };
 
-      <AppBar position="static" color="primary">
-        <Toolbar>
-          <Typography
-            variant="title"
-            color="inherit"
-            className={classes.flex}
+  render() {
+    const { activeTab } = this.state;
+    const { classes } = this.props;
+
+    return (
+      <div id="app">
+        <ReduxToastr
+          timeOut={4000}
+          newestOnTop={false}
+          preventDuplicates
+          position="bottom-left"
+          transitionIn="fadeIn"
+          transitionOut="fadeOut"
+          progressBar
+          closeOnToastrClick
+        />
+
+        <AppBar position="static" color="primary">
+          <Toolbar>
+            <Typography
+              variant="title"
+              color="inherit"
+              className={classes.flex}
+            >
+              Exsp
+            </Typography>
+            <Button
+              color="inherit"
+              onClick={AuthService.logout}
+            >
+              Logout
+            </Button>
+          </Toolbar>
+        </AppBar>
+
+        <main className={classes.layout}>
+          <ActionProgressContainer />
+          <ActionBarContainer />
+          <Tabs
+            value={activeTab}
+            onChange={this.handleTabChange}
+            indicatorColor="primary"
+            textColor="primary"
+            centered
           >
-            Exsp
-          </Typography>
-          <Button
-            color="inherit"
-            onClick={AuthService.logout}
-          >
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
+            <Tab label="Playlists" />
+            <Tab label="Albums" />
+            <Tab label="Artists" />
+          </Tabs>
 
-      <main className={classes.layout}>
-        <ActionProgressContainer />
-        <ActionBarContainer />
-        <PlaylistContainer />
-        <AlbumContainer />
-        <ArtistContainer />
-      </main>
-    </div>
-  );
-};
+          <PlaylistContainer isVisible={activeTab === 0} />
+          <AlbumContainer isVisible={activeTab === 1} />
+          <ArtistContainer isVisible={activeTab === 2} />
+        </main>
+      </div>
+    );
+  }
+}
 
 App.propTypes = {
   classes: PropTypes.object.isRequired,

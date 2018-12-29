@@ -124,19 +124,30 @@ export class Album extends Component {
       e,
     } = this.state;
 
-    if (loading) {
-      return this.renderLoading();
-    } if (items && items.length) {
-      return this.renderTable();
-    } if (e) {
-      return this.renderError();
+    const { isVisible } = this.props;
+
+    if (isVisible) {
+      if (loading) {
+        return this.renderLoading();
+      } if (items && items.length) {
+        return this.renderTable();
+      } if (e) {
+        return this.renderError();
+      }
+      return (<p>There is no albums.</p>);
     }
-    return (<p>There is no albums.</p>);
+
+    return null;
   }
 }
 
+Album.defaultProps = {
+  isVisible: false,
+};
+
 Album.propTypes = {
-  fetchAlbums: PropTypes.func.isRequired,
   albums: PropTypes.object.isRequired,
+  isVisible: PropTypes.bool,
+  fetchAlbums: PropTypes.func.isRequired,
   actionExport: PropTypes.object.isRequired,
 };
