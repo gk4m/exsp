@@ -90,7 +90,6 @@ export class Artist extends Component {
     return (
       <Fragment>
         <CustomTable
-          title="Artists"
           headRows={rows}
           items={items}
           handleActionClick={this.handleExportClick}

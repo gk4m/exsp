@@ -30,7 +30,13 @@ const importer = {
     });
   },
 
-  async _importAlbum(data) {
+  async _importSongs(data) {
+    this._chunk(data, 50).forEach(async (item) => {
+      await api.saveTracks(item);
+    });
+  },
+
+  async _importAlbums(data) {
     this._chunk(data, 50).forEach(async (item) => {
       await api.saveAlbums(item);
     });
@@ -46,17 +52,22 @@ const importer = {
     try {
       const data = JSON.parse(json);
       const {
+        songs,
         playlists,
         albums,
         artists,
       } = data;
+
+      if (songs) {
+        await this._importSongs(songs);
+      }
 
       if (playlists) {
         await this._importPlaylists(playlists);
       }
 
       if (albums) {
-        await this._importAlbum(albums);
+        await this._importAlbums(albums);
       }
 
       if (artists) {

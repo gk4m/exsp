@@ -1,15 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import TableCell from '@material-ui/core/TableCell';
-import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { msToMinutes } from '@/utils';
 import { CustomTable } from '@/components/customTable';
 import {
   Exporter,
   ResourceType,
 } from '@/services';
 
-export class Album extends Component {
+export class Song extends Component {
   constructor(props) {
     super(props);
 
@@ -19,28 +19,28 @@ export class Album extends Component {
     };
   }
 
-  componentWillMount() {
+  async componentWillMount() {
     const {
-      fetchAlbums,
+      fetchSongs,
     } = this.props;
 
-    fetchAlbums();
+    fetchSongs();
   }
 
   componentDidUpdate(prevProps) {
-    const { albums } = this.props;
-    const { albums: prevAlbums } = prevProps;
+    const { songs } = this.props;
+    const { songs: prevSongs } = prevProps;
 
-    if (!albums.isLoading && prevAlbums.isLoading && !albums.failure) {
+    if (!songs.isLoading && prevSongs.isLoading && !songs.failure) {
       this.setState({
-        items: [...albums.data.items.map(item => item.album)],
+        items: [...songs.data.items.map(item => item.track)],
         loading: false,
       });
     }
   }
 
   handleExportClick = (selected) => {
-    Exporter.doExport(selected, ResourceType.ALBUM);
+    Exporter.doExport(selected, ResourceType.SONG);
   };
 
   renderLoading = () => {
@@ -73,16 +73,16 @@ export class Album extends Component {
 
     const rows = [
       {
-        id: 'image', numeric: false, disablePadding: false, label: 'Cover',
+        id: 'name', numeric: false, disablePadding: false, label: 'Title',
       },
       {
-        id: 'name', numeric: false, disablePadding: false, label: 'Name',
+        id: 'artists', numeric: false, disablePadding: false, label: 'Artist',
       },
       {
-        id: 'artists', numeric: false, disablePadding: false, label: 'Artists',
+        id: 'album', numeric: false, disablePadding: false, label: 'Album',
       },
       {
-        id: 'tracks', numeric: true, disablePadding: false, label: 'Tracks',
+        id: 'duration_ms', numeric: true, disablePadding: false, label: 'Time',
       },
     ];
 
@@ -96,9 +96,6 @@ export class Album extends Component {
           renderBody={item => (
             <Fragment>
               <TableCell>
-                {item.images[0] && <Avatar alt="" src={item.images[0].url} />}
-              </TableCell>
-              <TableCell>
                 {item.name}
               </TableCell>
               <TableCell>
@@ -106,8 +103,11 @@ export class Album extends Component {
                   ? `${artist.name}, `
                   : artist.name))}
               </TableCell>
+              <TableCell>
+                {item.album.name}
+              </TableCell>
               <TableCell numeric>
-                {item.total_tracks}
+                {msToMinutes(item.duration_ms)}
               </TableCell>
             </Fragment>
           )}
@@ -133,20 +133,20 @@ export class Album extends Component {
       } if (e) {
         return this.renderError();
       }
-      return (<p>There is no albums.</p>);
+      return (<p>There is no songs.</p>);
     }
 
     return null;
   }
 }
 
-Album.defaultProps = {
+Song.defaultProps = {
   isVisible: false,
 };
 
-Album.propTypes = {
-  albums: PropTypes.object.isRequired,
+Song.propTypes = {
+  songs: PropTypes.object.isRequired,
   isVisible: PropTypes.bool,
-  fetchAlbums: PropTypes.func.isRequired,
+  fetchSongs: PropTypes.func.isRequired,
   actionExport: PropTypes.object.isRequired,
 };

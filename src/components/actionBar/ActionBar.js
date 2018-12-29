@@ -8,6 +8,7 @@ export class ActionBar extends Component {
   async componentDidUpdate(prevProps) {
     const {
       actionImport,
+      fetchSongs,
       fetchPlaylists,
       fetchArtists,
       fetchAlbums,
@@ -18,6 +19,7 @@ export class ActionBar extends Component {
     if (!actionImport.isLoading && prevActionImport.isLoading && !actionImport.failure) {
       setTimeout(() => {
         fetchAlbums();
+        fetchSongs();
         fetchPlaylists();
         fetchArtists();
       }, 500);
@@ -131,6 +133,7 @@ ActionBar.propTypes = {
   albums: PropTypes.object.isRequired,
   playlists: PropTypes.object.isRequired,
   artists: PropTypes.object.isRequired,
+  fetchSongs: PropTypes.func.isRequired,
   fetchPlaylists: PropTypes.func.isRequired,
   fetchArtists: PropTypes.func.isRequired,
   fetchAlbums: PropTypes.func.isRequired,

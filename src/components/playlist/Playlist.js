@@ -87,7 +87,6 @@ export class Playlist extends Component {
     return (
       <Fragment>
         <CustomTable
-          title="Playlists"
           headRows={rows}
           items={items}
           handleActionClick={this.handleExportClick}

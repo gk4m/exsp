@@ -14,6 +14,7 @@ import {
 import AuthService from '@/services/auth';
 import { ActionProgressContainer } from '@/components/actionProgress';
 import { ActionBarContainer } from '@/components/actionBar';
+import { SongContainer } from '@/components/song';
 import { PlaylistContainer } from '@/components/playlist';
 import { AlbumContainer } from '@/components/album';
 import { ArtistContainer } from '@/components/artist';
@@ -94,14 +95,16 @@ class App extends Component {
             textColor="primary"
             centered
           >
+            <Tab label="Songs" />
             <Tab label="Playlists" />
             <Tab label="Albums" />
             <Tab label="Artists" />
           </Tabs>
 
-          <PlaylistContainer isVisible={activeTab === 0} />
-          <AlbumContainer isVisible={activeTab === 1} />
-          <ArtistContainer isVisible={activeTab === 2} />
+          <SongContainer isVisible={activeTab === 0} />
+          <PlaylistContainer isVisible={activeTab === 1} />
+          <AlbumContainer isVisible={activeTab === 2} />
+          <ArtistContainer isVisible={activeTab === 3} />
         </main>
       </div>
     );

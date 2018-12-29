@@ -2,6 +2,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import * as actions from './actions';
+import { fetchSongs } from '@/components/song/actions';
 import { fetchPlaylists } from '@/components/playlist/actions';
 import { fetchAlbums } from '@/components/album/actions';
 import { fetchArtists } from '@/components/artist/actions';
@@ -19,6 +20,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
     ...actions,
+    fetchSongs,
     fetchPlaylists,
     fetchArtists,
     fetchAlbums,

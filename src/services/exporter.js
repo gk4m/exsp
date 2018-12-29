@@ -1,6 +1,6 @@
 import { saveAs } from 'file-saver/FileSaver';
 import { toastr } from 'react-redux-toastr';
-import { ResourceType } from './types/ResourceType';
+import { ResourceType } from './constants/ResourceType';
 import Repository from './repository';
 
 const exporter = {
@@ -49,6 +49,14 @@ const exporter = {
     await exporter._saveAs(toExport, 'playlists-backup');
   },
 
+  async _exportSongs(selected) {
+    const toExport = {};
+
+    toExport.songs = selected;
+
+    await exporter._saveAs(toExport, 'songs-backup');
+  },
+
   async _exportAlbums(selected) {
     const toExport = {};
 
@@ -81,6 +89,9 @@ const exporter = {
 
     try {
       switch (type) {
+        case ResourceType.SONG:
+          result = await this._exportSongs(selected);
+          break;
         case ResourceType.PLAYLIST:
           result = await this._exportPlaylists(selected);
           break;

@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Exsp",
+  "name": "Export/import your Spotify playlists, albums and artists.",
   "icons": [
     {
       "src": "favicon.ico",

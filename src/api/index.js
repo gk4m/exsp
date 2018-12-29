@@ -35,6 +35,12 @@ export default {
     });
   },
 
+  saveTracks(ids) {
+    return request.put('me/tracks', {
+      ids,
+    });
+  },
+
   getAlbums(offset, limit, market) {
     return request.get('me/albums', {
       params: {
