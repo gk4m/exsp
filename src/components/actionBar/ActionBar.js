@@ -44,20 +44,23 @@ export class ActionBar extends Component {
 
   handleExportClick = () => {
     const {
-      playlists,
+      songs,
       albums,
       artists,
+      playlists,
       doExport,
     } = this.props;
 
-    const playlistsIds = playlists.data.items.map(item => item.id);
+    const songsIds = songs.data.items.map(item => item.track.id);
     const albumsIds = albums.data.items.map(item => item.album.id);
     const artistsIds = artists.data.items.map(item => item.id);
+    const playlistsIds = playlists.data.items.map(item => item.id);
 
     doExport({
-      playlists: playlistsIds,
+      songs: songsIds,
       albums: albumsIds,
       artists: artistsIds,
+      playlists: playlistsIds,
     });
   };
 
@@ -130,6 +133,7 @@ export class ActionBar extends Component {
 ActionBar.propTypes = {
   doImport: PropTypes.func.isRequired,
   doExport: PropTypes.func.isRequired,
+  songs: PropTypes.object.isRequired,
   albums: PropTypes.object.isRequired,
   playlists: PropTypes.object.isRequired,
   artists: PropTypes.object.isRequired,

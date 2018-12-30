@@ -12,9 +12,10 @@ import { ActionBar } from './ActionBar';
 const mapStateToProps = state => ({
   actionImport: state.action.import,
   actionExport: state.action.export,
+  songs: state.song.songs,
   albums: state.album.albums,
-  playlists: state.playlist.playlists,
   artists: state.artist.artists,
+  playlists: state.playlist.playlists,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(
