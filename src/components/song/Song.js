@@ -1,16 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import TableCell from '@material-ui/core/TableCell';
-import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { msToMinutes } from '@/utils';
 import { CustomTable } from '@/components/customTable';
-
 import {
   Exporter,
   ResourceType,
 } from '@/services';
 
-export class Artist extends Component {
+export class Song extends Component {
   constructor(props) {
     super(props);
 
@@ -22,26 +21,26 @@ export class Artist extends Component {
 
   async componentWillMount() {
     const {
-      fetchArtists,
+      fetchSongs,
     } = this.props;
 
-    fetchArtists();
+    fetchSongs();
   }
 
   componentDidUpdate(prevProps) {
-    const { artists } = this.props;
-    const { artists: prevArtists } = prevProps;
+    const { songs } = this.props;
+    const { songs: prevSongs } = prevProps;
 
-    if (!artists.isLoading && prevArtists.isLoading && !artists.failure) {
+    if (!songs.isLoading && prevSongs.isLoading && !songs.failure) {
       this.setState({
-        items: [...artists.data.items],
+        items: [...songs.data.items.map(item => item.track)],
         loading: false,
       });
     }
   }
 
   handleExportClick = (selected) => {
-    Exporter.doExport(selected, ResourceType.ARTIST);
+    Exporter.doExport(selected, ResourceType.SONG);
   };
 
   renderLoading = () => {
@@ -74,16 +73,16 @@ export class Artist extends Component {
 
     const rows = [
       {
-        id: 'image', numeric: false, disablePadding: false, label: 'Cover',
+        id: 'name', numeric: false, disablePadding: false, label: 'Title',
       },
       {
-        id: 'name', numeric: false, disablePadding: false, label: 'Name',
+        id: 'artists', numeric: false, disablePadding: false, label: 'Artist',
       },
       {
-        id: 'genres', numeric: false, disablePadding: false, label: 'Genres',
+        id: 'album', numeric: false, disablePadding: false, label: 'Album',
       },
       {
-        id: 'followers', numeric: true, disablePadding: false, label: 'Followers',
+        id: 'duration_ms', numeric: true, disablePadding: false, label: 'Time',
       },
     ];
 
@@ -97,18 +96,18 @@ export class Artist extends Component {
           renderBody={item => (
             <Fragment>
               <TableCell>
-                {item.images[0] && <Avatar alt="" src={item.images[0].url} />}
-              </TableCell>
-              <TableCell>
                 {item.name}
               </TableCell>
               <TableCell>
-                {item.genres.map((genre, index) => (index > 0
-                  ? `${genre}, `
-                  : genre))}
+                {item.artists.map((artist, index) => (index > 0
+                  ? `${artist.name}, `
+                  : artist.name))}
+              </TableCell>
+              <TableCell>
+                {item.album.name}
               </TableCell>
               <TableCell numeric>
-                {item.followers.total}
+                {msToMinutes(item.duration_ms)}
               </TableCell>
             </Fragment>
           )}
@@ -134,20 +133,20 @@ export class Artist extends Component {
       } if (e) {
         return this.renderError();
       }
-      return (<p className="text-align-center">There is no artists.</p>);
+      return (<p className="text-align-center">There is no songs.</p>);
     }
 
     return null;
   }
 }
 
-Artist.defaultProps = {
+Song.defaultProps = {
   isVisible: false,
 };
 
-Artist.propTypes = {
-  artists: PropTypes.object.isRequired,
+Song.propTypes = {
+  songs: PropTypes.object.isRequired,
   isVisible: PropTypes.bool,
-  fetchArtists: PropTypes.func.isRequired,
+  fetchSongs: PropTypes.func.isRequired,
   actionExport: PropTypes.object.isRequired,
 };

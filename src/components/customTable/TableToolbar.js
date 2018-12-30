@@ -1,12 +1,14 @@
-import React from 'react';
-import classNames from 'classnames';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
-import Button from '@material-ui/core/Button';
-import {withStyles} from '@material-ui/core/styles';
-import {lighten} from '@material-ui/core/styles/colorManipulator';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
+import { lighten } from '@material-ui/core/styles/colorManipulator';
+import {
+  Toolbar,
+  Typography,
+  Tooltip,
+  Button,
+} from '@material-ui/core';
 
 const styles = theme => ({
   root: {
@@ -33,16 +35,18 @@ const styles = theme => ({
   },
 });
 
-class TableToolbar extends React.Component {
-
+class TableToolbar extends PureComponent {
   render() {
     const {
-      numSelected,
-      selected,
-      classes,
-      action,
       title,
+      action,
+      classes,
+      selected,
+      numSelected,
+      disableAction,
     } = this.props;
+
+    const isActionDisabled = disableAction || !(numSelected > 0);
 
     return (
       <Toolbar
@@ -53,7 +57,9 @@ class TableToolbar extends React.Component {
         <div className={classes.title}>
           {numSelected > 0 ? (
             <Typography color="inherit" variant="subheading">
-              {numSelected} selected
+              {numSelected}
+              {' '}
+selected
             </Typography>
           ) : (
             <Typography variant="title" id="tableTitle">
@@ -61,31 +67,38 @@ class TableToolbar extends React.Component {
             </Typography>
           )}
         </div>
-        <div className={classes.spacer}/>
+        <div className={classes.spacer} />
         <div className={classes.actions}>
-            <Tooltip title="Export">
-              <div>
-                <Button
-                  onClick={() => action(selected)}
-                  variant="contained"
-                  color="secondary"
-                  size="small"
-                  disabled={!(numSelected > 0)}
-                >
-                  Export
-                </Button>
-              </div>
-            </Tooltip>
+          <Tooltip title="Export">
+            <div>
+              <Button
+                onClick={() => action(selected)}
+                variant="contained"
+                color="secondary"
+                size="small"
+                disabled={isActionDisabled}
+              >
+                Export
+              </Button>
+            </div>
+          </Tooltip>
         </div>
       </Toolbar>
     );
   }
 }
 
+TableToolbar.defaultProps = {
+  title: '',
+};
+
 TableToolbar.propTypes = {
-  classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
   title: PropTypes.string,
+  action: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
+  selected: PropTypes.array.isRequired,
+  numSelected: PropTypes.number.isRequired,
+  disableAction: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(TableToolbar);

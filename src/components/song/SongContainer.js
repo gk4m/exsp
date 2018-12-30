@@ -2,13 +2,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import * as actions from './actions';
-import { Artist } from './Artist';
+import { Song } from './Song';
 
 const mapStateToProps = state => ({
-  artists: state.artist.artists,
+  songs: state.song.songs,
   actionExport: state.action.export,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
-export const ArtistContainer = connect(mapStateToProps, mapDispatchToProps)(Artist);
+export const SongContainer = connect(mapStateToProps, mapDispatchToProps)(Song);

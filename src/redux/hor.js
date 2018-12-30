@@ -9,12 +9,12 @@ export function createReducer(actionPath) {
   };
 
   const PROPS = {
-    REQUEST: `isLoading`,
-    FAILURE: `failure`,
-    DATA: `data`,
+    REQUEST: 'isLoading',
+    FAILURE: 'failure',
+    DATA: 'data',
   };
 
-  const INITIAL_STATE ={
+  const INITIAL_STATE = {
     [PROPS.REQUEST]: false,
     [PROPS.FAILURE]: false,
     [PROPS.DATA]: null,
@@ -45,7 +45,7 @@ export function createReducer(actionPath) {
         [PROPS.DATA]: action.payload,
       };
     },
-    [ACTIONS.END](state) {
+    [ACTIONS.END]() {
       return INITIAL_STATE;
     },
   }, INITIAL_STATE);

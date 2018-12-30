@@ -6,7 +6,7 @@ export default {
   async login() {
     const apiUrl = 'https://accounts.spotify.com/authorize';
     const clientID = 'fe86f5b47d0b4cea8fd6eb37741aad92';
-    const {host, protocol, pathname} = window.location;
+    const { host, protocol, pathname } = window.location;
     const redirectUri = `${protocol}//${host}${pathname}`;
     const scope = [
       'playlist-read-private',
@@ -18,8 +18,8 @@ export default {
       'user-follow-read',
       'user-follow-modify',
     ]
-    .toString()
-    .replace(',','%20');
+      .toString()
+      .replace(',', '%20');
 
     const responseType = 'token';
 
@@ -27,16 +27,16 @@ export default {
   },
 
   logout() {
-    let script = document.createElement('script');
+    const script = document.createElement('script');
 
     script.src = 'https://www.spotify.com/logout/';
     document.getElementById('app').appendChild(script);
 
     ls.clear();
 
-    setTimeout(function () {
+    setTimeout(() => {
       window.location.reload();
-    }, 1000)
+    }, 1000);
   },
 
   setAccessToken(token) {
@@ -55,12 +55,12 @@ export default {
     return ls.get('expiry');
   },
 
-  getUserId(){
+  getUserId() {
     return ls.get('user_id');
   },
 
   async initUser() {
-    try{
+    try {
       const response = await api.getUserProfile();
       ls.set('user_id', response.data.id);
     } catch (e) {
@@ -70,11 +70,11 @@ export default {
 
   getTokensFromQuery() {
     const vars = window.location.hash.substring(1).split('&');
-    let key = {};
+    const key = {};
 
     for (let i = 0; i < vars.length; i++) {
-      let tmp = vars[i].split('=');
-      key[tmp[0]] = tmp[1];
+      const [tokenKey, tokenValue] = vars[i].split('=');
+      key[tokenKey] = tokenValue;
     }
 
     if (key.access_token && key.expires_in) {
@@ -83,5 +83,5 @@ export default {
 
       this.initUser();
     }
-  }
+  },
 };

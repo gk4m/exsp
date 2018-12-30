@@ -1,73 +1,130 @@
-import React, {Component} from 'react';
-import {toastr} from 'react-redux-toastr'
+import React, { Component } from 'react';
+import { toastr } from 'react-redux-toastr';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
+import { Button } from '@material-ui/core';
+import api from '../../api';
 
 export class ActionBar extends Component {
-
   async componentDidUpdate(prevProps) {
     const {
-      imported,
+      actionImport,
+      fetchSongs,
       fetchPlaylists,
       fetchArtists,
       fetchAlbums,
     } = this.props;
-    const {imported: prevImported} = prevProps;
 
-    if (!imported.isLoading && prevImported.isLoading) {
-      if (imported.failure) {
-        toastr.error('Error', imported.data);
-      } else {
-        toastr.success('Imported!', 'File has been imported correctly.');
+    const { actionImport: prevActionImport } = prevProps;
 
-        setTimeout(() => {
-          fetchAlbums();
-          fetchPlaylists();
-          fetchArtists();
-        }, 500);
-      }
+    if (!actionImport.isLoading && prevActionImport.isLoading && !actionImport.failure) {
+      setTimeout(() => {
+        fetchAlbums();
+        fetchSongs();
+        fetchPlaylists();
+        fetchArtists();
+      }, 500);
     }
   }
 
   handleImportChange = (event) => {
-    const {doImport} = this.props;
-
-    const {files} = event.target;
+    const { doImport } = this.props;
+    const { files } = event.target;
     const reader = new FileReader();
 
     reader.readAsText(files[0], 'UTF-8');
 
     reader.onload = (evt) => {
-      try {
-        doImport(evt.target.result);
-      } catch (e) {
-        console.error(e);
-      }
+      doImport(evt.target.result);
     };
 
     reader.onerror = () => {
       toastr.error('Error', 'Error on file import!');
-    }
+    };
+  };
+
+  handleExportClick = () => {
+    const {
+      songs,
+      albums,
+      artists,
+      playlists,
+      doExport,
+    } = this.props;
+
+    const songsIds = songs.data.items.map(item => item.track.id);
+    const albumsIds = albums.data.items.map(item => item.album.id);
+    const artistsIds = artists.data.items.map(item => item.id);
+    const playlistsIds = playlists.data.items.map(item => item.id);
+
+    doExport({
+      songs: songsIds,
+      albums: albumsIds,
+      artists: artistsIds,
+      playlists: playlistsIds,
+    });
+  };
+
+  handleRemoveClick = () => {
+    // temporary function for test
+    const {
+      playlists,
+    } = this.props;
+
+    const playlistsIds = playlists.data.items.map(item => item.id);
+
+    playlistsIds.forEach(async (item) => {
+      await api.unfollowPlaylist(item);
+    });
   };
 
   render() {
+    const {
+      actionExport,
+      actionImport,
+    } = this.props;
+
     return (
       <div>
         <label htmlFor="import-file">
           <Button
             variant="contained"
             color="primary"
-            component="span" style={{marginTop: '10px'}}>
+            component="span"
+            disabled={actionImport.isLoading}
+          >
             Import
           </Button>
-          <input
-            accept=".json"
-            onChange={this.handleImportChange}
-            id="import-file"
-            type="file"
-            style={{display: 'none'}}
-          />
+
+          {!actionImport.isLoading && (
+            <input
+              onChange={this.handleImportChange}
+              accept=".json"
+              id="import-file"
+              type="file"
+              style={{ display: 'none' }}
+            />
+          )}
         </label>
+
+        <Button
+          onClick={this.handleExportClick}
+          variant="contained"
+          color="primary"
+          component="span"
+          style={{ marginLeft: '10px' }}
+          disabled={actionExport.isLoading}
+        >
+          Export
+        </Button>
+        {/* <Button */}
+        {/* onClick={this.handleRemoveClick} */}
+        {/* variant="contained" */}
+        {/* color="primary" */}
+        {/* component="span" */}
+        {/* style={{ marginLeft: '10px' }} */}
+        {/* > */}
+        {/* remove */}
+        {/* </Button> */}
       </div>
     );
   }
@@ -75,9 +132,15 @@ export class ActionBar extends Component {
 
 ActionBar.propTypes = {
   doImport: PropTypes.func.isRequired,
+  doExport: PropTypes.func.isRequired,
+  songs: PropTypes.object.isRequired,
+  albums: PropTypes.object.isRequired,
+  playlists: PropTypes.object.isRequired,
+  artists: PropTypes.object.isRequired,
+  fetchSongs: PropTypes.func.isRequired,
   fetchPlaylists: PropTypes.func.isRequired,
   fetchArtists: PropTypes.func.isRequired,
   fetchAlbums: PropTypes.func.isRequired,
-  imported: PropTypes.object.isRequired,
+  actionImport: PropTypes.object.isRequired,
+  actionExport: PropTypes.object.isRequired,
 };
-

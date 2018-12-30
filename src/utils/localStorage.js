@@ -21,5 +21,5 @@ export default {
 
   clear() {
     this.ls.clear();
-  }
+  },
 };

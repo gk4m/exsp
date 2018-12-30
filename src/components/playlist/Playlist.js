@@ -1,14 +1,10 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import TableCell from '@material-ui/core/TableCell';
 import Avatar from '@material-ui/core/Avatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {CustomTable} from '@/components/customTable'
-
-import {
-  Exporter,
-  ResourceType
-} from '@/services';
+import { CustomTable } from '@/components/customTable';
+import { ResourceType } from '@/services';
 
 export class Playlist extends Component {
   constructor(props) {
@@ -18,6 +14,14 @@ export class Playlist extends Component {
       items: [],
       loading: true,
     };
+  }
+
+  componentWillMount() {
+    const {
+      fetchPlaylists,
+    } = this.props;
+
+    fetchPlaylists();
   }
 
   componentDidUpdate(prevProps) {
@@ -32,22 +36,15 @@ export class Playlist extends Component {
     }
   }
 
-  componentWillMount() {
-    const {
-      fetchPlaylists,
-    } = this.props;
-
-    fetchPlaylists();
-  }
-
-  handleExportClick = (selected) => {
-    Exporter.doExport(selected, ResourceType.PLAYLIST);
+  handleExportClick = async (selected) => {
+    const { doExport } = this.props;
+    doExport(selected, ResourceType.PLAYLIST);
   };
 
   renderLoading = () => {
     const style = {
-      textAlign: "center",
-      margin: "15px"
+      textAlign: 'center',
+      margin: '15px',
     };
 
     return (
@@ -57,33 +54,47 @@ export class Playlist extends Component {
     );
   };
 
-  renderError = () => {
-    return <div>I'm sorry! Please try again.</div>;
-  };
+  renderError = () => (
+    <div>
+      {'I\'m sorry! Please try again.'}
+    </div>
+  );
 
   renderTable() {
     const {
       items,
     } = this.state;
 
+    const {
+      actionExport,
+    } = this.props;
+
     const rows = [
-      {id: 'image', numeric: false, disablePadding: false, label: 'Cover'},
-      {id: 'name', numeric: false, disablePadding: false, label: 'Name'},
-      {id: 'owner', numeric: false, disablePadding: false, label: 'Owner'},
-      {id: 'tracks', numeric: true, disablePadding: false, label: 'Tracks'},
+      {
+        id: 'image', numeric: false, disablePadding: false, label: 'Cover',
+      },
+      {
+        id: 'name', numeric: false, disablePadding: false, label: 'Name',
+      },
+      {
+        id: 'owner', numeric: false, disablePadding: false, label: 'Owner',
+      },
+      {
+        id: 'tracks', numeric: true, disablePadding: false, label: 'Tracks',
+      },
     ];
 
     return (
       <Fragment>
         <CustomTable
-          title="Playlists"
           headRows={rows}
           items={items}
           handleActionClick={this.handleExportClick}
-          renderBody={(item)=> (
+          disableAction={actionExport.isLoading}
+          renderBody={item => (
             <Fragment>
               <TableCell>
-                {item.images[0] && <Avatar alt="" src={item.images[0].url}/>}
+                {item.images[0] && <Avatar alt="" src={item.images[0].url} />}
               </TableCell>
               <TableCell>
                 {item.name}
@@ -104,19 +115,30 @@ export class Playlist extends Component {
       e,
     } = this.state;
 
-    if (loading) {
-      return this.renderLoading();
-    } else if (items && items.length) {
-      return this.renderTable();
-    } else if(e){
-      return this.renderError();
-    } else {
-      return (<p>There is no playlists.</p>)
+    const { isVisible } = this.props;
+
+    if (isVisible) {
+      if (loading) {
+        return this.renderLoading();
+      } if (items && items.length) {
+        return this.renderTable();
+      } if (e) {
+        return this.renderError();
+      }
+      return (<p className="text-align-center">There is no playlists.</p>);
     }
+
+    return null;
   }
 }
 
+Playlist.defaultProps = {
+  isVisible: false,
+};
+
 Playlist.propTypes = {
-  fetchPlaylists: PropTypes.func.isRequired,
+  isVisible: PropTypes.bool,
   playlists: PropTypes.object.isRequired,
+  fetchPlaylists: PropTypes.func.isRequired,
+  actionExport: PropTypes.object.isRequired,
 };

@@ -1,10 +1,12 @@
-import api from '../api'
-import auth from './auth'
+import { toastr } from 'react-redux-toastr';
+import { waitFor, asyncForEach } from '../utils';
+import api from '../api';
+import auth from './auth';
 
 const importer = {
 
   _chunk(arr, chunkSize) {
-    let result = [];
+    const result = [];
 
     for (let i = 0, len = arr.length; i < len; i += chunkSize) {
       result.push(arr.slice(i, i + chunkSize));
@@ -13,29 +15,36 @@ const importer = {
     return result;
   },
 
-  _importPlaylists(data) {
-    const user_id = auth.getUserId();
+  async _importPlaylists(data) {
+    const userId = auth.getUserId();
 
-    data.forEach(async (item) => {
-      const uris = item.tracks.map(el => el.track.uri);
-
-      const response = await api.createPlaylist(user_id, item.name);
+    await asyncForEach(data, async (playlist) => {
+      const uris = playlist.tracks.map(el => el.track.uri);
+      const response = await api.createPlaylist(userId, playlist.name);
 
       this._chunk(uris, 100).forEach(async (item) => {
         await api.addTracksToPlaylist(response.data.id, item);
       });
-    })
-  },
 
-  _importAlbum(data) {
-    this._chunk(data, 50).forEach(async (item) => {
-      await api.saveAlbums(item)
+      await waitFor(500);
     });
   },
 
-  _importArtists(data) {
+  async _importSongs(data) {
     this._chunk(data, 50).forEach(async (item) => {
-      await api.follow('artist', item)
+      await api.saveTracks(item);
+    });
+  },
+
+  async _importAlbums(data) {
+    this._chunk(data, 50).forEach(async (item) => {
+      await api.saveAlbums(item);
+    });
+  },
+
+  async _importArtists(data) {
+    this._chunk(data, 50).forEach(async (item) => {
+      await api.follow('artist', item);
     });
   },
 
@@ -43,24 +52,31 @@ const importer = {
     try {
       const data = JSON.parse(json);
       const {
+        songs,
         playlists,
         albums,
         artists,
       } = data;
 
+      if (songs) {
+        await this._importSongs(songs);
+      }
+
       if (playlists) {
-        return this._importPlaylists(playlists)
+        await this._importPlaylists(playlists);
       }
 
       if (albums) {
-        return this._importAlbum(albums);
+        await this._importAlbums(albums);
       }
 
       if (artists) {
-        return this._importArtists(artists);
+        await this._importArtists(artists);
       }
+
+      toastr.success('Imported!', 'File has been imported correctly.');
     } catch (e) {
-      return Promise.reject('Imported file is incorrect!')
+      toastr.error('Error', 'Imported file is incorrect!. Please try again.');
     }
   },
 };

@@ -1,12 +1,16 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TablePagination,
+  TableRow,
+  Paper,
+  Checkbox,
+} from '@material-ui/core';
+
 import TableHead from './TableHead';
 import TableToolbar from './TableToolbar';
 
@@ -27,22 +31,22 @@ class CustomTable extends React.Component {
     rowsPerPage: 5,
   };
 
-  handleSelectAllClick = event => {
+  handleSelectAllClick = (event) => {
     const {
       items,
     } = this.props;
 
     if (event.target.checked) {
-      this.setState(state => ({
-        selected: items.map(n => n.id)
+      this.setState(() => ({
+        selected: items.map(n => n.id),
       }));
       return;
     }
-    this.setState({selected: []});
+    this.setState({ selected: [] });
   };
 
   handleClick = (event, id) => {
-    const {selected} = this.state;
+    const { selected } = this.state;
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
@@ -59,29 +63,33 @@ class CustomTable extends React.Component {
       );
     }
 
-    this.setState({selected: newSelected});
+    this.setState({ selected: newSelected });
   };
 
   handleChangePage = (event, page) => {
-    this.setState({page});
+    this.setState({ page });
   };
 
-  handleChangeRowsPerPage = event => {
+  handleChangeRowsPerPage = (event) => {
     this.setState({
-      rowsPerPage: event.target.value
+      rowsPerPage: event.target.value,
     });
   };
 
-  isSelected = id => this.state.selected.indexOf(id) !== -1;
+  isSelected = (id) => {
+    const { selected } = this.state;
+    return selected.indexOf(id) !== -1;
+  };
 
   render() {
     const {
       classes,
       items,
-      handleActionClick,
       title,
       headRows,
       renderBody,
+      handleActionClick,
+      disableAction,
     } = this.props;
 
     const {
@@ -99,6 +107,7 @@ class CustomTable extends React.Component {
           numSelected={selected.length}
           selected={selected}
           action={handleActionClick}
+          disableAction={disableAction}
           title={title}
         />
 
@@ -115,7 +124,7 @@ class CustomTable extends React.Component {
             <TableBody>
               {items
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(item => {
+                .map((item) => {
                   const isSelected = this.isSelected(item.id);
 
                   return (
@@ -129,7 +138,7 @@ class CustomTable extends React.Component {
                       selected={isSelected}
                     >
                       <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected}/>
+                        <Checkbox checked={isSelected} />
                       </TableCell>
                       {renderBody && (
                         renderBody(item)
@@ -139,8 +148,8 @@ class CustomTable extends React.Component {
                 })}
 
               {emptyRows > 0 && (
-                <TableRow style={{height: 49 * emptyRows}}>
-                  <TableCell colSpan={6}/>
+                <TableRow style={{ height: 49 * emptyRows }}>
+                  <TableCell colSpan={6} />
                 </TableRow>
               )}
 
@@ -166,5 +175,19 @@ class CustomTable extends React.Component {
     );
   }
 }
+
+CustomTable.defaultProps = {
+  title: '',
+};
+
+CustomTable.propTypes = {
+  title: PropTypes.string,
+  items: PropTypes.array.isRequired,
+  headRows: PropTypes.array.isRequired,
+  classes: PropTypes.object.isRequired,
+  renderBody: PropTypes.func.isRequired,
+  disableAction: PropTypes.bool.isRequired,
+  handleActionClick: PropTypes.func.isRequired,
+};
 
 export default withStyles(styles)(CustomTable);
