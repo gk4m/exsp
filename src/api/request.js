@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toastr } from 'react-redux-toastr';
 import AuthService from '../services/auth';
 import ls from '../utils/localStorage';
 
@@ -29,6 +30,10 @@ request.interceptors.response.use(null, (error) => {
 
   if (status === 503) {
     return axios(config);
+  }
+
+  if (status === 429) {
+    toastr.error('Error', 'Too Many Requests - Rate limiting has been applied.');
   }
 
   return error.response;
